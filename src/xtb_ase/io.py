@@ -25,6 +25,21 @@ def write_xtb(
 ) -> None:
     """
     Write out the input files for xTB.
+
+    Parameters
+    ----------
+    atoms
+        The ASE atoms object.
+    input_filepath
+        The path to the xTB input file.
+    geom_filepath
+        The path to the xTB geometry file.
+    parameters
+        The xTB parameters to use, formatted as a dictionary.
+
+    Returns
+    -------
+    None
     """
 
     template_str = """
@@ -50,6 +65,16 @@ def write_xtb(
 def read_xtb(output_filepath: Path | str) -> ccData:
     """
     Read the output files from xTB.
+
+    Parameters
+    ----------
+    output_filepath
+        The path to the xTB output file.
+    
+    Returns
+    -------
+    cclib_obj
+        The cclib object containing the xTB results.
     """
     cclib_obj = ccread(output_filepath)
 
