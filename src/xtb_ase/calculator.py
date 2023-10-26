@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 _LABEL = "xtb"
 
 
-class xTBProfile:
+class XTBProfile:
     """
     xTB profile
     """
@@ -48,7 +48,7 @@ class xTBProfile:
             check_call(cmd, stdout=fd, cwd=directory)
 
 
-class xTBTemplate(CalculatorTemplate):
+class XTBTemplate(CalculatorTemplate):
     """
     xTB template
     """
@@ -93,22 +93,22 @@ class xTBTemplate(CalculatorTemplate):
         }
 
 
-class xTB(GenericFileIOCalculator):
+class XTB(GenericFileIOCalculator):
     """
     xTB calculator
     """
 
     def __init__(
         self,
-        profile: xTBProfile | None = None,
+        profile: XTBProfile | None = None,
         directory: Path | str = ".",
         **parameters,
     ) -> None:
-        self.profile = xTBProfile() or profile
+        self.profile = XTBProfile() or profile
         self.directory = Path(directory).expanduser().resolve()
 
         super().__init__(
-            template=xTBTemplate(),
+            template=XTBTemplate(),
             profile=self.profile,
             directory=self.directory,
             parameters=parameters,
