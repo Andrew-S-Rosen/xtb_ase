@@ -35,9 +35,9 @@ class XTBProfile:
     def run(
         self,
         directory: Path | str,
-        input_file: Path | str,
-        geom_file: Path | str,
-        output_file: Path | str,
+        input_file: str,
+        geom_file: str,
+        output_file: str,
     ) -> None:
         cmd = self.argv + ["--input", str(input_file), str(geom_file)]
         with open(output_file, "w") as fd:
@@ -72,7 +72,7 @@ class XTBTemplate(CalculatorTemplate):
         """
         self.periodic = bool(atoms.pbc.all())
         self.geom_file = "POSCAR" if self.periodic else "coord.xyz"
-        write_xtb(atoms, directory, self.input_file, parameters=parameters)
+        write_xtb(atoms, directory, self.input_file, self.geom_file, parameters=parameters)
 
     def read_results(self, directory: Path) -> Results:
         """

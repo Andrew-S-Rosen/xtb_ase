@@ -20,7 +20,8 @@ if TYPE_CHECKING:
 def write_xtb(
     atoms: Atoms,
     directory: Path | str,
-    input_file: Path | str,
+    input_file: str,
+    geom_file: str,
     parameters: dict[str, Any],
 ) -> None:
     """
@@ -45,7 +46,6 @@ def write_xtb(
         fd.write(input_text)
 
     # Write the geometry file
-    geom_file = "POSCAR" if atoms.pbc.any() else "coord.xyz"
     write(directory / geom_file, atoms)
 
 
