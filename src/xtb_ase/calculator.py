@@ -21,8 +21,8 @@ if TYPE_CHECKING:
     from numpy.typing import NDArray
 
     class Results(TypedDict):
-        energy: float  # ASE units
-        forces: NDArray  # ASE units
+        energy: float  # eV
+        forces: NDArray  # eV/Å
         attributes: dict[str, Any] | None  # https://cclib.github.io/data.html
 
 

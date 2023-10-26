@@ -12,13 +12,20 @@ if TYPE_CHECKING:
     from typing import Any
 
     from ase.atoms import Atoms
+    from cclib.parser.data import ccData
 
 
-def write_xtb(inputfile: Path, atoms: Atoms, kw: dict[str, Any]):
+def write_xtb(inputfile: Path, atoms: Atoms, kw: dict[str, Any]) -> None:
+    """
+    Write out the input files for xTB.
+    """
     return
 
 
-def read_xtb(outputfile: Path):
+def read_xtb(outputfile: Path) -> ccData:
+    """
+    Read the output files from xTB.
+    """
     cclib_obj = ccread(outputfile)
 
     if not cclib_obj:
