@@ -70,7 +70,7 @@ def read_xtb(output_filepath: Path | str) -> ccData:
     ----------
     output_filepath
         The path to the xTB output file.
-    
+
     Returns
     -------
     cclib_obj

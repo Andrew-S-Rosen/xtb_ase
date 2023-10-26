@@ -38,11 +38,11 @@ class XTBProfile:
         ----------
         argv
             The command line arguments to the xTB executable.
-        
+
         Returns
         -------
         None
-        
+
         """
         self.argv = argv or ["xtb"]
 
@@ -93,7 +93,7 @@ class XTBTemplate(CalculatorTemplate):
             The path to the directory to run the xTB executable in.
         profile
             The xTB profile to use.
-        
+
         Returns
         -------
         None
@@ -120,6 +120,10 @@ class XTBTemplate(CalculatorTemplate):
             The xTB parameters to use, formatted as a dictionary.
         properties
             This is needed the base class and should not be explicitly specified.
+
+        Returns
+        -------
+        None
         """
         self.periodic = bool(atoms.pbc.all())
         self.geom_file = "POSCAR" if self.periodic else "coord.xyz"
@@ -138,7 +142,7 @@ class XTBTemplate(CalculatorTemplate):
         ----------
         directory
             The path to the directory to read the xTB results from.
-        
+
         Returns
         -------
         Results
