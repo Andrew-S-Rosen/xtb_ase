@@ -42,7 +42,6 @@ class XTBProfile:
         Returns
         -------
         None
-
         """
         self.argv = argv or ["xtb"]
 
