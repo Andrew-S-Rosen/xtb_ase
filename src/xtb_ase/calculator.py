@@ -65,7 +65,7 @@ class xTBTemplate(CalculatorTemplate):
         """
         Run the xTB executable.
         """
-        profile.run(directory, self.input_file, self.output_file, self.geom_file)
+        profile.run(directory, self.input_file, self.geom_file, self.output_file)
 
     def write_input(
         self, directory: Path | str, atoms: Atoms, parameters: dict[str, Any], properties: Any
