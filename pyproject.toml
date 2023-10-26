@@ -4,12 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "xtb_ase"
-description="A Python package description goes here."
+description="A fully featured ASE calculator for xTB."
 version = "0.0.1"
 readme = "README.md"
 license = { text = "BSD-3" }
-authors = [{ name = "YourName", email = "YourName@email.com" }]
-keywords = ["MyKeyword1", "MyKeyword2"]
+authors = [{ name = "Andrew S. Rosen", email = "asrosen@princeton.edu" }]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -17,9 +16,9 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering",
-    "Operating System :: Microsoft :: Windows",
     "Operating System :: Unix",
     "Operating System :: MacOS",
 ]
