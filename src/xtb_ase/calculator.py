@@ -70,7 +70,7 @@ class XTBTemplate(CalculatorTemplate):
         """
         Write the xTB input files.
         """
-        self.periodic = True if atoms.pbc.all() else False
+        self.periodic = bool(atoms.pbc.all())
         self.geom_file = "POSCAR" if self.periodic else "coord.xyz"
         write_xtb(atoms, directory, self.input_file, parameters=parameters)
 
