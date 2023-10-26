@@ -3,19 +3,21 @@ ASE calculator for xtb_ase
 """
 from __future__ import annotations
 
-import os
-
 from pathlib import Path
 from shutil import which
 from subprocess import check_call
 from typing import TYPE_CHECKING
 
 from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
-from ase.units import Hartree, Bohr
-from cclib.io import ccread
+from ase.units import Bohr, Hartree
+from monty.json import jsanitize
+
+from xtb_ase.io import read_xtb, write_xtb
 
 if TYPE_CHECKING:
     from ase.atoms import Atoms
+
+_LABEL = "xtb"
 
 
 class xTBProfile:
@@ -27,8 +29,9 @@ class xTBProfile:
         self.argv = argv
 
     def run(self, directory, inputfile, outputfile):
+        cmd = self.argv + [str(inputfile)]
         with open(outputfile, "w") as fd:
-            check_call(self.argv + [str(inputfile)], stdout=fd, cwd=directory)
+            check_call(cmd, stdout=fd, cwd=directory)
 
 
 class xTBTemplate(CalculatorTemplate):
@@ -38,11 +41,11 @@ class xTBTemplate(CalculatorTemplate):
 
     def __init__(self):
         super().__init__(
-            name="xtb", implemented_properties=["energy", "forces", "attributes"]
+            name=_LABEL, implemented_properties=["energy", "forces", "attributes"]
         )
 
-        self.input_file = f"{self._label}.inp"
-        self.output_file = f"{self._label}.out"
+        self.input_file = f"{_LABEL}.inp"
+        self.output_file = f"{_LABEL}.out"
 
     def execute(self, directory, profile) -> None:
         profile.run(directory, self.input_file, self.output_file)
@@ -58,16 +61,13 @@ class xTBTemplate(CalculatorTemplate):
         )
         kw.update(parameters)
 
-        io.write_orca(directory / self.input_file, atoms, kw)
+        write_xtb(directory / self.input_file, atoms, kw)
 
     def read_results(self, directory: Path):
         """
         Use cclib to read the results from the xTB calculation.
         """
-        cclib_obj = ccread(directory / self.output_file)
-        if not cclib_obj:
-            msg = f"Could not read {self.output_file}"
-            raise RuntimeError(msg)
+        cclib_obj = read_xtb(directory / self.output_file)
 
         energy = cclib_obj.scfenergies[-1] * Hartree if cclib_obj.scfenergies else None
         forces = (
@@ -77,7 +77,7 @@ class xTBTemplate(CalculatorTemplate):
         return {
             "energy": energy,
             "forces": forces,
-            "attributes": cclib_obj.getattributes(),
+            "attributes": jsanitize(cclib_obj.getattributes()),
         }
 
 
@@ -98,12 +98,9 @@ class xTB(GenericFileIOCalculator):
         if not bool(which("xtb")):
             raise FileNotFoundError("xtb executable not found in PATH")
 
-        if profile is None:
-            profile = xTBProfile(["xtb"])
-
         super().__init__(
             template=xTBTemplate(),
-            profile=profile,
+            profile=xTBProfile(["xtb"]) or profile,
             directory=directory,
             parameters=kwargs,
         )
