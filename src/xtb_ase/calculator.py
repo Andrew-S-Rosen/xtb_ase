@@ -24,10 +24,6 @@ if TYPE_CHECKING:
         forces: NDArray  # Nx3, eV/Å
         attributes: dict[str, Any] | None  # https://cclib.github.io/data.html
 
-
-_LABEL = "xtb"
-
-
 class XTBProfile:
     """
     xTB profile
@@ -54,12 +50,13 @@ class XTBTemplate(CalculatorTemplate):
     """
 
     def __init__(self) -> None:
+        label = "xtb"
         super().__init__(
-            name=_LABEL, implemented_properties=["energy", "forces", "attributes"]
+            name=label, implemented_properties=["energy", "forces", "attributes"]
         )
 
-        self.input_file = f"{_LABEL}.inp"
-        self.output_file = f"{_LABEL}.out"
+        self.input_file = f"{label}.inp"
+        self.output_file = f"{label}.out"
 
     def execute(self, directory, profile) -> None:
         """
