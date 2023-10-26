@@ -68,7 +68,7 @@ class xTBTemplate(CalculatorTemplate):
         profile.run(directory, self.input_file, self.output_file, self.geom_file)
 
     def write_input(
-        self, directory: Path | str, atoms: Atoms, parameters: dict[str, Any]
+        self, directory: Path | str, atoms: Atoms, parameters: dict[str, Any], properties: Any
     ) -> None:
         """
         Write the xTB input files.
@@ -100,7 +100,6 @@ class xTB(GenericFileIOCalculator):
 
     def __init__(
         self,
-        *,
         profile: xTBProfile | None = None,
         directory: Path | str = ".",
         **parameters,
