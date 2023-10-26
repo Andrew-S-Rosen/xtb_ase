@@ -15,7 +15,16 @@ from monty.json import jsanitize
 from xtb_ase.io import read_xtb, write_xtb
 
 if TYPE_CHECKING:
+    from typing import Any, TypedDict
+
     from ase.atoms import Atoms
+    from numpy.typing import NDArray
+
+    class Results(TypedDict):
+        energy: float  # ASE units
+        forces: NDArray  # ASE units
+        attributes: dict[str, Any] | None  # https://cclib.github.io/data.html
+
 
 _LABEL = "xtb"
 
@@ -50,7 +59,9 @@ class xTBTemplate(CalculatorTemplate):
     def execute(self, directory, profile) -> None:
         profile.run(directory, self.input_file, self.output_file)
 
-    def write_input(self, directory: Path, atoms: Atoms, parameters, properties):
+    def write_input(
+        self, directory: Path, atoms: Atoms, parameters, properties
+    ) -> None:
         parameters = dict(parameters)
 
         kw = dict(
@@ -63,16 +74,14 @@ class xTBTemplate(CalculatorTemplate):
 
         write_xtb(directory / self.input_file, atoms, kw)
 
-    def read_results(self, directory: Path):
+    def read_results(self, directory: Path) -> Results:
         """
         Use cclib to read the results from the xTB calculation.
         """
         cclib_obj = read_xtb(directory / self.output_file)
 
-        energy = cclib_obj.scfenergies[-1] * Hartree if cclib_obj.scfenergies else None
-        forces = (
-            cclib_obj.grads[-1, :, :] * (Hartree / Bohr) if cclib_obj.grads else None
-        )
+        energy = cclib_obj.scfenergies[-1] * Hartree
+        forces = cclib_obj.grads[-1, :, :] * (Hartree / Bohr)
 
         return {
             "energy": energy,
