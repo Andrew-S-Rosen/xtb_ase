@@ -4,7 +4,6 @@ ASE calculator for xtb_ase
 from __future__ import annotations
 
 from pathlib import Path
-from shutil import which
 from subprocess import check_call
 from typing import TYPE_CHECKING
 
@@ -22,7 +21,7 @@ if TYPE_CHECKING:
 
     class Results(TypedDict):
         energy: float  # eV
-        forces: NDArray  # eV/Å
+        forces: NDArray  # Nx3, eV/Å
         attributes: dict[str, Any] | None  # https://cclib.github.io/data.html
 
 
@@ -34,12 +33,18 @@ class xTBProfile:
     xTB profile
     """
 
-    def __init__(self, argv):
-        self.argv = argv
+    def __init__(self, argv: list[str] | None = None) -> None:
+        self.argv = argv or ["xtb"]
 
-    def run(self, directory, inputfile, outputfile):
-        cmd = self.argv + [str(inputfile)]
-        with open(outputfile, "w") as fd:
+    def run(
+        self,
+        directory: Path | str,
+        input_file: Path | str,
+        geom_file: Path | str,
+        output_file: Path | str,
+    ) -> None:
+        cmd = self.argv + ["--input", str(input_file), str(geom_file)]
+        with open(output_file, "w") as fd:
             check_call(cmd, stdout=fd, cwd=directory)
 
 
@@ -48,7 +53,7 @@ class xTBTemplate(CalculatorTemplate):
     xTB template
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             name=_LABEL, implemented_properties=["energy", "forces", "attributes"]
         )
@@ -57,22 +62,20 @@ class xTBTemplate(CalculatorTemplate):
         self.output_file = f"{_LABEL}.out"
 
     def execute(self, directory, profile) -> None:
-        profile.run(directory, self.input_file, self.output_file)
+        """
+        Run the xTB executable.
+        """
+        profile.run(directory, self.input_file, self.output_file, self.geom_file)
 
     def write_input(
-        self, directory: Path, atoms: Atoms, parameters, properties
+        self, directory: Path | str, atoms: Atoms, parameters: dict[str, Any]
     ) -> None:
-        parameters = dict(parameters)
-
-        kw = dict(
-            charge=0,
-            mult=1,
-            orcasimpleinput="B3LYP def2-TZVP",
-            orcablocks="%pal nprocs 1 end",
-        )
-        kw.update(parameters)
-
-        write_xtb(directory / self.input_file, atoms, kw)
+        """
+        Write the xTB input files.
+        """
+        self.periodic = True if atoms.pbc.all() else False
+        self.geom_file = "POSCAR" if self.periodic else "coord.xyz"
+        write_xtb(atoms, directory, self.input_file, parameters=parameters)
 
     def read_results(self, directory: Path) -> Results:
         """
@@ -100,16 +103,14 @@ class xTB(GenericFileIOCalculator):
         *,
         profile: xTBProfile | None = None,
         directory: Path | str = ".",
-        **kwargs,
-    ):
-        self.directory = Path(directory).expanduser()
-
-        if not bool(which("xtb")):
-            raise FileNotFoundError("xtb executable not found in PATH")
+        **parameters,
+    ) -> None:
+        self.profile = xTBProfile() or profile
+        self.directory = Path(directory).expanduser().resolve()
 
         super().__init__(
             template=xTBTemplate(),
-            profile=xTBProfile(["xtb"]) or profile,
-            directory=directory,
-            parameters=kwargs,
+            profile=self.profile,
+            directory=self.directory,
+            parameters=parameters,
         )
