@@ -42,7 +42,7 @@ def write_xtb(
     None
     """
 
-    template_str = """
+    template_str = r"""
     {% for key, value in parameters.items() %}
     ${{ key }}
     {% for inner_key, inner_value in value.items() %}
