@@ -7,4 +7,3 @@ from xtb_ase.calculator import XTB
 __all__ = ["XTB"]
 
 __version__ = version("xtb_ase")
-

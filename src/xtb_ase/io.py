@@ -19,9 +19,8 @@ if TYPE_CHECKING:
 
 def write_xtb(
     atoms: Atoms,
-    directory: Path | str,
-    input_file: str,
-    geom_file: str,
+    input_filepath: Path | str,
+    geom_filepath: Path | str,
     parameters: dict[str, Any],
 ) -> None:
     """
@@ -38,25 +37,24 @@ def write_xtb(
 
     {% endfor %}
     """
-    directory = Path(directory)
 
     # Write the input file using the Jinja2 template
     input_text = Template(template_str).render(parameters=parameters)
-    with open(directory / input_file, "w") as fd:
+    with open(input_filepath, "w") as fd:
         fd.write(input_text)
 
     # Write the geometry file
-    write(directory / geom_file, atoms)
+    write(geom_filepath, atoms)
 
 
-def read_xtb(outputfile: Path | str) -> ccData:
+def read_xtb(output_filepath: Path | str) -> ccData:
     """
     Read the output files from xTB.
     """
-    cclib_obj = ccread(outputfile)
+    cclib_obj = ccread(output_filepath)
 
     if not cclib_obj:
-        msg = f"Could not read {outputfile}"
+        msg = f"Could not read {output_filepath}"
         raise RuntimeError(msg)
 
     return cclib_obj

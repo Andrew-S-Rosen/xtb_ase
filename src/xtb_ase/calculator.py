@@ -24,6 +24,7 @@ if TYPE_CHECKING:
         forces: NDArray  # Nx3, eV/Å
         attributes: dict[str, Any] | None  # https://cclib.github.io/data.html
 
+
 class XTBProfile:
     """
     xTB profile
@@ -65,14 +66,23 @@ class XTBTemplate(CalculatorTemplate):
         profile.run(directory, self.input_file, self.geom_file, self.output_file)
 
     def write_input(
-        self, directory: Path | str, atoms: Atoms, parameters: dict[str, Any], properties: Any
+        self,
+        directory: Path | str,
+        atoms: Atoms,
+        parameters: dict[str, Any],
+        properties: Any,
     ) -> None:
         """
         Write the xTB input files.
         """
         self.periodic = bool(atoms.pbc.all())
         self.geom_file = "POSCAR" if self.periodic else "coord.xyz"
-        write_xtb(atoms, directory, self.input_file, self.geom_file, parameters=parameters)
+        write_xtb(
+            atoms,
+            directory / self.input_file,
+            directory / self.geom_file,
+            parameters=parameters,
+        )
 
     def read_results(self, directory: Path) -> Results:
         """
