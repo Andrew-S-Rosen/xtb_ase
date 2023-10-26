@@ -57,7 +57,7 @@ class XTBProfile:
             check_call(cmd, stdout=fd, cwd=directory)
 
 
-class XTBTemplate(CalculatorTemplate):
+class _XTBTemplate(CalculatorTemplate):
     """
     xTB template
     """
@@ -187,7 +187,7 @@ class XTB(GenericFileIOCalculator):
         directory = Path(directory).expanduser().resolve()
 
         super().__init__(
-            template=XTBTemplate(),
+            template=_XTBTemplate(),
             profile=profile,
             directory=directory,
             parameters=parameters,
