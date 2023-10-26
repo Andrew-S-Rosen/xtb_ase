@@ -183,7 +183,7 @@ class XTB(GenericFileIOCalculator):
             The xTB parameters to use.
         """
 
-        profile = XTBProfile() or profile
+        profile = profile or XTBProfile()
         directory = Path(directory).expanduser().resolve()
 
         super().__init__(
