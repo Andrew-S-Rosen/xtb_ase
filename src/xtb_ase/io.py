@@ -19,12 +19,27 @@ if TYPE_CHECKING:
 
 def write_xtb(
     atoms: Atoms,
-    directory: Path | str,
-    input_file: Path | str,
+    input_filepath: Path | str,
+    geom_filepath: Path | str,
     parameters: dict[str, Any],
 ) -> None:
     """
     Write out the input files for xTB.
+
+    Parameters
+    ----------
+    atoms
+        The ASE atoms object.
+    input_filepath
+        The path to the xTB input file.
+    geom_filepath
+        The path to the xTB geometry file.
+    parameters
+        The xTB parameters to use, formatted as a dictionary.
+
+    Returns
+    -------
+    None
     """
 
     template_str = """
@@ -37,26 +52,34 @@ def write_xtb(
 
     {% endfor %}
     """
-    directory = Path(directory)
 
     # Write the input file using the Jinja2 template
     input_text = Template(template_str).render(parameters=parameters)
-    with open(directory / input_file, "w") as fd:
+    with open(input_filepath, "w") as fd:
         fd.write(input_text)
 
     # Write the geometry file
-    geom_file = "POSCAR" if atoms.pbc.any() else "coord.xyz"
-    write(directory / geom_file, atoms)
+    write(geom_filepath, atoms)
 
 
-def read_xtb(outputfile: Path | str) -> ccData:
+def read_xtb(output_filepath: Path | str) -> ccData:
     """
     Read the output files from xTB.
+
+    Parameters
+    ----------
+    output_filepath
+        The path to the xTB output file.
+
+    Returns
+    -------
+    cclib_obj
+        The cclib object containing the xTB results.
     """
-    cclib_obj = ccread(outputfile)
+    cclib_obj = ccread(output_filepath)
 
     if not cclib_obj:
-        msg = f"Could not read {outputfile}"
+        msg = f"Could not read {output_filepath}"
         raise RuntimeError(msg)
 
     return cclib_obj
