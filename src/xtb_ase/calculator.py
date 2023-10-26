@@ -101,12 +101,12 @@ class XTB(GenericFileIOCalculator):
         directory: Path | str = ".",
         **parameters,
     ) -> None:
-        self.profile = XTBProfile() or profile
-        self.directory = Path(directory).expanduser().resolve()
+        profile = XTBProfile() or profile
+        directory = Path(directory).expanduser().resolve()
 
         super().__init__(
             template=XTBTemplate(),
-            profile=self.profile,
-            directory=self.directory,
+            profile=profile,
+            directory=directory,
             parameters=parameters,
         )
