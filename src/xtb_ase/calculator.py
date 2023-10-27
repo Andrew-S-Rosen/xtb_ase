@@ -21,7 +21,8 @@ if TYPE_CHECKING:
     class Results(TypedDict):
         energy: float  # eV
         forces: NDArray  # Nx3, eV/Å
-        attributes: dict[str, Any] | None  # https://cclib.github.io/data.html
+        attributes: dict[str, Any] | None  # https://cclib.github.io/data_dev.html
+        metadata: dict[str, Any] | None  # https://cclib.github.io/data_notes.html#metadata
 
 
 class XTBProfile:
