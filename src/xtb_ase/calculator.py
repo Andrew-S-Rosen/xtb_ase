@@ -3,6 +3,8 @@ ASE calculator for xtb_ase
 """
 from __future__ import annotations
 
+import multiprocessing
+
 from pathlib import Path
 from subprocess import check_call
 from typing import TYPE_CHECKING
@@ -45,7 +47,14 @@ class XTBProfile:
         -------
         None
         """
-        self.argv = argv or ["xtb"]
+        cpu_count = multiprocessing.cpu_count()
+        parallel_flag = f"--parallel {cpu_count}"
+        self.argv = argv or [f"xtb {parallel_flag}" if cpu_count > 1 else "xtb"]
+
+        if "--input" in self.argv or "-I" in self.argv:
+            raise ValueError(
+                "The --input (-I) flag should not be specified in the xTB profile."
+            )
 
     def run(
         self,

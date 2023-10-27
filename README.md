@@ -6,7 +6,7 @@ A fully featured ASE calculator for the xTB code.
 
 ## Context
 
-The [`xtb` package](https://github.com/grimme-lab/xtb) is an excellent program developed that provides unified access to various extended tight-binding quantum chemistry methods.
+The [`xtb` package](https://github.com/grimme-lab/xtb) is an excellent program that provides unified access to various extended tight-binding quantum chemistry methods.
 
 There are several pre-existing Pythonic interfaces to the xTB suite of methods. The most notable include [`tblite`](https://github.com/tblite/tblite) and the now-deprecated [`xtb-python`](https://github.com/grimme-lab/xtb-python). However, these interfaces do not provide full access to all the functionality of `xtb`, making their utility somewhat limited.
 
