@@ -49,8 +49,8 @@ class XTBProfile:
         None
         """
         cpu_count = multiprocessing.cpu_count()
-        default_xtb_cmd = f"xtb --parallel {cpu_count}" if cpu_count > 1 else "xtb"
-        self.argv = argv or [default_xtb_cmd]
+        default_argv = ["xtb", "--parallel", str(cpu_count)] if cpu_count > 1 else ["xtb"]
+        self.argv = argv or default_argv
 
     def run(
         self,
@@ -130,7 +130,7 @@ class _XTBTemplate(CalculatorTemplate):
         directory: Path | str,
         atoms: Atoms,
         parameters: dict[str, Any],
-        properties: Any,
+        _properties: Any,
     ) -> None:
         """
         Write the xTB input files.
@@ -143,7 +143,7 @@ class _XTBTemplate(CalculatorTemplate):
             The ASE atoms object to write.
         parameters
             The xTB parameters to use, formatted as a dictionary.
-        properties
+        _properties
             This is needed the base class and should not be explicitly specified.
 
         Returns
@@ -184,7 +184,7 @@ class _XTBTemplate(CalculatorTemplate):
             "metadata": jsanitize(cclib_obj.metadata),
         }
 
-        if hasattr(cclib_obj, "grads"):
+        if getattr(cclib_obj, "grads", None):
             results["forces"] = cclib_obj.grads[-1, :, :]
 
         return results
