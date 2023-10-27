@@ -1,5 +1,6 @@
-from xtb_ase.calculator import XTB
 from ase.build import bulk, molecule
+
+from xtb_ase.calculator import XTB
 
 
 def test_molecule_static(tmpdir):
