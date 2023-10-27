@@ -4,7 +4,6 @@ ASE calculator for xtb_ase
 from __future__ import annotations
 
 import multiprocessing
-
 from pathlib import Path
 from subprocess import check_call
 from typing import TYPE_CHECKING
