@@ -49,7 +49,9 @@ class XTBProfile:
         None
         """
         cpu_count = multiprocessing.cpu_count()
-        default_argv = ["xtb", "--parallel", str(cpu_count)] if cpu_count > 1 else ["xtb"]
+        default_argv = (
+            ["xtb", "--parallel", str(cpu_count)] if cpu_count > 1 else ["xtb"]
+        )
         self.argv = argv or default_argv
 
     def run(
