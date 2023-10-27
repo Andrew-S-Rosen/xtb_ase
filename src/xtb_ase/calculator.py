@@ -177,7 +177,7 @@ class _XTBTemplate(CalculatorTemplate):
         cclib_obj = read_xtb(directory / self.output_file)
 
         energy = cclib_obj.scfenergies[-1]
-        
+
         results = {
             "energy": energy,
             "attributes": jsanitize(cclib_obj.getattributes()),
