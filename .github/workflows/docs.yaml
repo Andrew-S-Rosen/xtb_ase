@@ -33,7 +33,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           python-version: "3.12"
-          activate-environment: quacc-env
+          activate-environment: actions-env
 
       - name: Install pip packages
         run: |

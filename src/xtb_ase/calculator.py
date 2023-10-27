@@ -8,7 +8,6 @@ from subprocess import check_call
 from typing import TYPE_CHECKING
 
 from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
-from ase.units import Bohr, Hartree
 from monty.json import jsanitize
 
 from xtb_ase.io import read_xtb, write_xtb
@@ -22,7 +21,8 @@ if TYPE_CHECKING:
     class Results(TypedDict):
         energy: float  # eV
         forces: NDArray  # Nx3, eV/Å
-        attributes: dict[str, Any] | None  # https://cclib.github.io/data.html
+        attributes: dict[str, Any] | None  # https://cclib.github.io/data_dev.html
+        metadata: dict[str, Any] | None  # https://cclib.github.io/data_notes.html#metadata
 
 
 class XTBProfile:
@@ -42,7 +42,6 @@ class XTBProfile:
         Returns
         -------
         None
-
         """
         self.argv = argv or ["xtb"]
 
@@ -53,12 +52,30 @@ class XTBProfile:
         geom_file: str,
         output_file: str,
     ) -> None:
+        """
+        Run the xTB calculation.
+
+        Parameters
+        ----------
+        directory
+            The directory where the calculation will be run.
+        input_file
+            The name of the input file present in the directory.
+        geom_file
+            The name of the coordinates file present in the directory.
+        output_file
+            The name of the log file to write to in the directory.
+
+        Returns
+        -------
+        None
+        """
         cmd = self.argv + ["--input", str(input_file), str(geom_file)]
         with open(output_file, "w") as fd:
             check_call(cmd, stdout=fd, cwd=directory)
 
 
-class XTBTemplate(CalculatorTemplate):
+class _XTBTemplate(CalculatorTemplate):
     """
     xTB template
     """
@@ -77,7 +94,7 @@ class XTBTemplate(CalculatorTemplate):
         """
         label = "xtb"
         super().__init__(
-            name=label, implemented_properties=["energy", "forces", "attributes"]
+            name=label, implemented_properties=["energy", "forces", "attributes", "metadata"]
         )
 
         self.input_file = f"{label}.inp"
@@ -150,13 +167,14 @@ class XTBTemplate(CalculatorTemplate):
         """
         cclib_obj = read_xtb(directory / self.output_file)
 
-        energy = cclib_obj.scfenergies[-1] * Hartree
-        forces = cclib_obj.grads[-1, :, :] * (Hartree / Bohr)
+        energy = cclib_obj.scfenergies[-1]
+        # forces = cclib_obj.grads[-1, :, :]
 
         return {
             "energy": energy,
-            "forces": forces,
+            # "forces": forces,
             "attributes": jsanitize(cclib_obj.getattributes()),
+            "metadata": jsanitize(cclib_obj.metadata),
         }
 
 
@@ -184,11 +202,11 @@ class XTB(GenericFileIOCalculator):
             The xTB parameters to use.
         """
 
-        profile = XTBProfile() or profile
+        profile = profile or XTBProfile()
         directory = Path(directory).expanduser().resolve()
 
         super().__init__(
-            template=XTBTemplate(),
+            template=_XTBTemplate(),
             profile=profile,
             directory=directory,
             parameters=parameters,

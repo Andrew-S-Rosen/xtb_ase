@@ -38,7 +38,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           python-version: ${{ matrix.python-version }}
-          activate-environment: quacc-env
+          activate-environment: actions-env
 
       - name: Install packages
         run: |
