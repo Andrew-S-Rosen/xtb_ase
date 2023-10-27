@@ -52,6 +52,25 @@ class XTBProfile:
         geom_file: str,
         output_file: str,
     ) -> None:
+        """
+        Run the xTB calculation.
+
+        Parameters
+        ----------
+        directory
+            The directory where the calculation will be run.
+        input_file
+            The name of the input file present in the directory.
+        geom_file
+            The name of the coordinates file present in the directory.
+        output_file
+            The name of the log file to write to in the directory.
+
+        Returns
+        -------
+        None
+        """
+        self.argv = argv or ["xtb"]
         cmd = self.argv + ["--input", str(input_file), str(geom_file)]
         with open(output_file, "w") as fd:
             check_call(cmd, stdout=fd, cwd=directory)
@@ -150,11 +169,11 @@ class _XTBTemplate(CalculatorTemplate):
         cclib_obj = read_xtb(directory / self.output_file)
 
         energy = cclib_obj.scfenergies[-1]
-        forces = cclib_obj.grads[-1, :, :]
+        # forces = cclib_obj.grads[-1, :, :]
 
         return {
             "energy": energy,
-            "forces": forces,
+            # "forces": forces,
             "attributes": jsanitize(cclib_obj.getattributes()),
             "metadata": jsanitize(cclib_obj.metadata),
         }
