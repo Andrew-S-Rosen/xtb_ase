@@ -8,7 +8,6 @@ from subprocess import check_call
 from typing import TYPE_CHECKING
 
 from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
-from ase.units import Bohr, Hartree
 from monty.json import jsanitize
 
 from xtb_ase.io import read_xtb, write_xtb
@@ -149,8 +148,8 @@ class _XTBTemplate(CalculatorTemplate):
         """
         cclib_obj = read_xtb(directory / self.output_file)
 
-        energy = cclib_obj.scfenergies[-1] * Hartree
-        forces = cclib_obj.grads[-1, :, :] * (Hartree / Bohr)
+        energy = cclib_obj.scfenergies[-1]
+        forces = cclib_obj.grads[-1, :, :]
 
         return {
             "energy": energy,
