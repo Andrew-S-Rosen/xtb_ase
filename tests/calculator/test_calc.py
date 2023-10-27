@@ -11,3 +11,4 @@ def test_molecule_static(tmpdir):
     assert isinstance(atoms.calc.results["energy"], float)
     # assert atoms.calc.results["forces"].shape == (2, 3)
     assert isinstance(atoms.calc.results["attributes"], dict)
+    assert isinstance(atoms.calc.results["metadata"], dict)
