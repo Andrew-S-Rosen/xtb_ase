@@ -40,27 +40,24 @@ class XTBProfile:
         Parameters
         ----------
         argv
-            The command line arguments to the xTB executable.
+            The command line arguments to the xTB executable. Do not specify an
+            input file, i.e. --input (-I), or the geometry file, as these will be
+            automatically added.
 
         Returns
         -------
         None
         """
         cpu_count = multiprocessing.cpu_count()
-        parallel_flag = f"--parallel {cpu_count}"
-        self.argv = argv or [f"xtb {parallel_flag}" if cpu_count > 1 else "xtb"]
-
-        if "--input" in self.argv or "-I" in self.argv:
-            raise ValueError(
-                "The --input (-I) flag should not be specified in the xTB profile."
-            )
+        default_xtb_cmd = f"xtb --parallel {cpu_count}" if cpu_count > 1 else "xtb"
+        self.argv = argv or [default_xtb_cmd]
 
     def run(
         self,
         directory: Path | str,
-        input_file: str,
-        geom_file: str,
-        output_file: str,
+        input_filename: str,
+        geom_filename: str,
+        output_filename: str,
     ) -> None:
         """
         Run the xTB calculation.
@@ -69,19 +66,19 @@ class XTBProfile:
         ----------
         directory
             The directory where the calculation will be run.
-        input_file
+        input_filename
             The name of the input file present in the directory.
-        geom_file
+        geom_filename
             The name of the coordinates file present in the directory.
-        output_file
+        output_filename
             The name of the log file to write to in the directory.
 
         Returns
         -------
         None
         """
-        cmd = self.argv + ["--input", str(input_file), str(geom_file)]
-        with open(output_file, "w") as fd:
+        cmd = self.argv + ["--input", input_filename, geom_filename]
+        with open(output_filename, "w") as fd:
             check_call(cmd, stdout=fd, cwd=directory)
 
 
@@ -155,6 +152,7 @@ class _XTBTemplate(CalculatorTemplate):
         """
         self.periodic = bool(atoms.pbc.all())
         self.geom_file = "POSCAR" if self.periodic else "coord.xyz"
+
         write_xtb(
             atoms,
             directory / self.input_file,
@@ -179,14 +177,17 @@ class _XTBTemplate(CalculatorTemplate):
         cclib_obj = read_xtb(directory / self.output_file)
 
         energy = cclib_obj.scfenergies[-1]
-        # forces = cclib_obj.grads[-1, :, :]
-
-        return {
+        
+        results = {
             "energy": energy,
-            # "forces": forces,
             "attributes": jsanitize(cclib_obj.getattributes()),
             "metadata": jsanitize(cclib_obj.metadata),
         }
+
+        if hasattr(cclib_obj, "grads"):
+            results["forces"] = cclib_obj.grads[-1, :, :]
+
+        return results
 
 
 class XTB(GenericFileIOCalculator):
