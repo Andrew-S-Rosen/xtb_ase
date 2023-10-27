@@ -70,7 +70,6 @@ class XTBProfile:
         -------
         None
         """
-        self.argv = argv or ["xtb"]
         cmd = self.argv + ["--input", str(input_file), str(geom_file)]
         with open(output_file, "w") as fd:
             check_call(cmd, stdout=fd, cwd=directory)
