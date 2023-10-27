@@ -75,7 +75,7 @@ class _XTBTemplate(CalculatorTemplate):
         """
         label = "xtb"
         super().__init__(
-            name=label, implemented_properties=["energy", "forces", "attributes"]
+            name=label, implemented_properties=["energy", "forces", "attributes", "metadata"]
         )
 
         self.input_file = f"{label}.inp"
@@ -155,6 +155,7 @@ class _XTBTemplate(CalculatorTemplate):
             "energy": energy,
             "forces": forces,
             "attributes": jsanitize(cclib_obj.getattributes()),
+            "metadata": jsanitize(cclib_obj.metadata),
         }
 
 
