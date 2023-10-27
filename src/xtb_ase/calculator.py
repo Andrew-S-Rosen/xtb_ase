@@ -130,7 +130,7 @@ class _XTBTemplate(CalculatorTemplate):
         directory: Path | str,
         atoms: Atoms,
         parameters: dict[str, Any],
-        _properties: Any,
+        properties: Any,
     ) -> None:
         """
         Write the xTB input files.
@@ -143,7 +143,7 @@ class _XTBTemplate(CalculatorTemplate):
             The ASE atoms object to write.
         parameters
             The xTB parameters to use, formatted as a dictionary.
-        _properties
+        properties
             This is needed the base class and should not be explicitly specified.
 
         Returns
