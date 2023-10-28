@@ -6,10 +6,6 @@ The `xtb_ase` calculator lets you set any of the typical [command-line arguments
 
 The `xtb_ase` calculator uses a "profile" system to set how the `xtb` executable is called. By default, the `xtb_ase` calculator will run via `xtb --parallel <NCPUS>` where `<NCPUS>` is the number of accessible CPUs.
 
-!!! Note
-
-    You should never specify the `--input` (`-I`) or coordinate file command-line arguments. The `xtb_ase` calculator will take care of those automatically.
-
 If you want to change the default command-line arguments, you can do so by instantiating a new profile. For example, to run the `xtb` executable as `xtb --gfn 1`:
 
 ```python
@@ -49,7 +45,11 @@ print(atoms.calc.results)
     'energy': -156.96750016825985}
     ```
 
-The logfile will automatically be written out as `xtb.out`, which can also be investigated.
+The logfile will automatically be written out as `xtb.out`, which can also be investigated as you see fit.
+
+!!! Note
+
+    You should never specify the `--input` (`-I`) or coordinate file command-line arguments. The `xtb_ase` calculator will take care of those automatically.
 
 ## Detailed Input
 
