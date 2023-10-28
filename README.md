@@ -13,20 +13,6 @@ A fully featured ASE calculator for the [xTB code](https://xtb-docs.readthedocs.
   📖 <a href="https://quantum-accelerators.github.io/xtb_ase/"><b><i>Read the Documentation!</i></b></a> 📖
 </p>
 
-## Minimal Example
-
-```python
-from ase.build import molecule
-from xtb_ase import XTB
-
-atoms = molecule("H2O")
-
-atoms.calc = XTB()
-atoms.get_potential_energy()
-
-print(atoms.calc.results)
-```
-
 ## Motivation
 
 The [`xtb` package](https://github.com/grimme-lab/xtb) is an excellent program that provides unified access to various extended tight-binding quantum chemistry methods.
