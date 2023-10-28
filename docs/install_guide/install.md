@@ -17,7 +17,7 @@ pip install git+https://gitlab.com/ase/ase/-/archive/master/ase-master.zip
 pip install git+https://github.com/cclib/cclib.git@refs/pull/1296/head
 ```
 
-## Installing `xtb_ase``
+## Installing `xtb_ase`
 
 Following this, you can then install `xtb_ase` as usual:
 
