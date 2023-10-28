@@ -53,7 +53,7 @@ The logfile will automatically be written out as `xtb.out`, which can also be in
 
 ## Detailed Input
 
-For more complex inputs, xTB supports a [detailed input](https://xtb-docs.readthedocs.io/en/latest/xcontrol.html) format called [`xcontrol`]()(https://github.com/grimme-lab/xtb/blob/main/man/xcontrol.7.adoc). This is also supported by the `xtb_ase` calculator, but instead of passing the arguments as an adjustment to the executable call in the `XTBProfile`, we modify the parameters of the `XTB` calculator instance.
+For more complex inputs, xTB supports a [detailed input](https://xtb-docs.readthedocs.io/en/latest/xcontrol.html) format called [`xcontrol`](https://github.com/grimme-lab/xtb/blob/main/man/xcontrol.7.adoc). This is also supported by the `xtb_ase` calculator, but instead of passing the arguments as an adjustment to the executable call in the `XTBProfile`, we modify the parameters of the `XTB` calculator instance.
 
 The same example as above can be run via the detailed input as follows:
 
