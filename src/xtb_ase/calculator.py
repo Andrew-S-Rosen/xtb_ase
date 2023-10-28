@@ -23,10 +23,6 @@ if TYPE_CHECKING:
         energy: float  # eV
         forces: NDArray  # Nx3, eV/Å
         attributes: dict[str, Any] | None  # https://cclib.github.io/data_dev.html
-        metadata: dict[
-            str, Any
-        ] | None  # https://cclib.github.io/data_notes.html#metadata
-
 
 class XTBProfile:
     """
@@ -102,7 +98,7 @@ class _XTBTemplate(CalculatorTemplate):
         label = "xtb"
         super().__init__(
             name=label,
-            implemented_properties=["energy", "forces", "attributes", "metadata"],
+            implemented_properties=["energy", "forces", "attributes"],
         )
 
         self.input_file = f"{label}.inp"
@@ -181,7 +177,6 @@ class _XTBTemplate(CalculatorTemplate):
         results = {
             "energy": energy,
             "attributes": jsanitize(cclib_obj.getattributes()),
-            "metadata": jsanitize(cclib_obj.metadata),
         }
 
         if getattr(cclib_obj, "grads", None):

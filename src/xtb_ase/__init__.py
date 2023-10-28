@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from importlib.metadata import version
 
-from xtb_ase.calculator import XTB
+from xtb_ase.calculator import XTB, XTBProfile
 
 __all__ = ["XTB"]
 

@@ -43,15 +43,19 @@ def write_xtb(
     """
 
     template_str = r"""
-    {% for key, value in parameters.items() %}
-    ${{ key }}
-    {% for inner_key, inner_value in value.items() %}
+{% for key, value in parameters.items() %}
+${{ key }}
+{% for inner_key, inner_value in value.items() %}
+    {% if inner_value is iterable and inner_value is not string %}
     {{ inner_key }}: {{ inner_value }}
-    {% endfor %}
-    $end
+    {% else %}
+    {{ inner_key }}={{ inner_value }}
+    {% endif %}
+{% endfor %}
+$end
 
-    {% endfor %}
-    """
+{% endfor %}
+"""
 
     # Write the input file using the Jinja2 template
     input_text = Template(template_str).render(parameters=parameters)
