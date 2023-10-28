@@ -131,7 +131,7 @@ class _XTBTemplate(CalculatorTemplate):
         directory: Path | str,
         atoms: Atoms,
         parameters: dict[str, Any],
-        properties: Any, # skipcq: PYL-W0613
+        properties: Any,  # skipcq: PYL-W0613
     ) -> None:
         """
         Write the xTB input files.
