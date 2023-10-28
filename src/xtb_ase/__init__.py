@@ -5,6 +5,6 @@ from importlib.metadata import version
 
 from xtb_ase.calculator import XTB, XTBProfile
 
-__all__ = ["XTB"]
+__all__ = ["XTB", "XTBProfile"]
 
 __version__ = version("xtb_ase")
