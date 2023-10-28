@@ -210,8 +210,12 @@ class XTB(GenericFileIOCalculator):
             The xTB profile to use.
         directory
             The path to the directory to run the xTB executable in.
-        parameters
+        **parameters
             The xTB parameters to use.
+        
+        Returns
+        -------
+        None
         """
 
         profile = profile or XTBProfile()
