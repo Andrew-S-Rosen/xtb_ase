@@ -48,6 +48,8 @@ print(atoms.calc.results)
 
 ## The Calculator Results
 
+First and foremost, the logfile will automatically be written out as `xtb.out`, which can be investigated as you see fit.
+
 The `results` attribute of the calculator is a dictionary that contains all the parsed information from an `xtb` run. It contains the following keys:
 
 - `energy`: The total energy of the system in units of eV. This can be accessed directly via `atoms.get_potential_energy()`.
