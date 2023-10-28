@@ -1,1 +1,1 @@
---8<-- "../xtb_ase/CHANGELOG.md"
+--8<-- "CHANGELOG.md"
