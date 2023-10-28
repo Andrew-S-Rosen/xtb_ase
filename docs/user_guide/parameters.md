@@ -57,9 +57,7 @@ print(atoms.calc.results)
 
 ## Detailed Input
 
-For more complex inputs, xTB supports a [detailed input](https://xtb-docs.readthedocs.io/en/latest/xcontrol.html) format called [`xcontrol`](https://github.com/grimme-lab/xtb/blob/main/man/xcontrol.7.adoc). This is also supported by the `xtb_ase` calculator, but instead of passing the arguments as an adjustment to the executable call in the `XTBProfile`, we modify the parameters of the `XTB` calculator instance.
-
-The same example as above can be run via the detailed input as follows:
+For more complex inputs, xTB supports a [detailed input](https://xtb-docs.readthedocs.io/en/latest/xcontrol.html) format called [`xcontrol`](https://github.com/grimme-lab/xtb/blob/main/man/xcontrol.7.adoc). This is also supported by the `xtb_ase` calculator, but instead of passing the arguments as an adjustment to the executable call in the `XTBProfile`, we modify the parameters of the `XTB` calculator instance. If desired, both an `XTBProfile` and `XTB` parameters can be supplied.
 
 ```python
 from ase.build import molecule
