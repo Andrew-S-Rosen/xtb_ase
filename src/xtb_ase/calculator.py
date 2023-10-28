@@ -24,6 +24,7 @@ if TYPE_CHECKING:
         forces: NDArray  # Nx3, eV/Å
         attributes: dict[str, Any] | None  # https://cclib.github.io/data_dev.html
 
+
 class XTBProfile:
     """
     xTB profile
