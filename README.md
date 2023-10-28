@@ -24,7 +24,7 @@ atoms = molecule("H2O")
 atoms.calc = XTB()
 atoms.get_potential_energy()
 
-print(atoms.calc.result)
+print(atoms.calc.results)
 ```
 
 ## Motivation
