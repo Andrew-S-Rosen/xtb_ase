@@ -212,7 +212,7 @@ class XTB(GenericFileIOCalculator):
             The path to the directory to run the xTB executable in.
         **parameters
             The xTB parameters to use.
-        
+
         Returns
         -------
         None
