@@ -1,4 +1,4 @@
-from ase.build import bulk, molecule
+from ase.build import molecule
 
 from xtb_ase.calculator import XTB
 
