@@ -106,6 +106,8 @@ class _XTBTemplate(CalculatorTemplate):
 
         self.input_file = f"{label}.inp"
         self.output_file = f"{label}.out"
+        self.periodic = None
+        self.geom_file = None
 
     def execute(self, directory: Path | str, profile: XTBProfile) -> None:
         """
