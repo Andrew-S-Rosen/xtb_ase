@@ -6,7 +6,7 @@ The `xtb_ase` calculator lets you set any of the typical [command-line arguments
 
 The `xtb_ase` calculator uses a "profile" system to set how the `xtb` executable is called. By default, the `xtb_ase` calculator will run via `xtb --parallel <NCPUS>` where `<NCPUS>` is the number of accessible CPUs.
 
-If you want to change the default command-line arguments, you can do so by instantiating a new profile. For example, to run the `xtb` executable as `xtb --gfn 1`:
+If you want to change the default command-line arguments, you can do so by instantiating a new profile. For example, to run the `xtb` executable as `xtb --opt --gfn 1`:
 
 ```python
 from ase.build import molecule
@@ -14,7 +14,7 @@ from xtb_ase import XTB, XTBProfile
 
 atoms = molecule("H2O")
 
-profile = XTBProfile(["xtb", "--gfn", "1"])
+profile = XTBProfile(["xtb", "--opt", "--gfn", "1"])
 atoms.calc = XTB(profile=profile)
 
 atoms.get_potential_energy()
@@ -24,25 +24,31 @@ print(atoms.calc.results)
 !!! Info
 
     ```python
-    {'attributes': {'charge': 0,
+    {'attributes': {'atomcoords': [[0.0, 1.16e-11, 0.10114745079573],
+                                   [0.0, 0.77088618141561, -0.46798972539333],
+                                   [0.0, -0.77088618142721, -0.4679897254024]],
+                    'atomnos': [8, 1, 1],
+                    'charge': 0,
+                    'coreelectrons': [0, 0, 0],
                     'homos': [0, 1, 2, 3],
                     'metadata': {'coord_type': 'xyz',
-                                'cpu_time': ['0:00:00.065000'],
-                                'methods': ['GFN1-xTB'],
-                                'package': 'xTB',
-                                'package_version': '6.6.1',
-                                'success': True,
-                                'wall_time': ['0:00:00.005000']},
-                    'moenergies': [[-20.615,
-                                    -16.5944,
-                                    -14.9473,
-                                    -13.6057,
-                                    -4.3471,
-                                    -1.4108,
-                                    8.5045,
-                                    12.0027]],
-                    'scfenergies': [-156.96750016825985]},
-    'energy': -156.96750016825985}
+                                 'cpu_time': ['0:00:00.197000'],
+                                 'methods': ['GFN1-xTB'],
+                                 'package': 'xTB',
+                                 'package_version': '6.6.1',
+                                 'success': True,
+                                 'wall_time': ['0:00:00.016000']},
+                    'moenergies': [[-20.6262,
+                                    -16.6667,
+                                    -14.8617,
+                                    -13.6046,
+                                    -4.2577,
+                                    -1.3582,
+                                    9.4794,
+                                    12.3964]],
+                    'natom': 3,
+                    'scfenergies': [-156.97635541503533]},
+     'energy': -156.97635541503533}
     ```
 
 !!! Note
