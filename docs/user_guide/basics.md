@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `xtb_ase` package behaves very similarly to other ASE calculators. Unlike most calculators, however, we have taken the liberty to store as many properties as possible in the `.results` attribute of the calculator. We demonstrate some basic examples below.
+The `xtb_ase` package behaves very similarly to other ASE calculators. We demonstrate some basic examples here.
 
 ## Minimal Example
 
