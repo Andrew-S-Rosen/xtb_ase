@@ -4,7 +4,7 @@
 
 We certainly welcome bugfixes and contributions as pull requests (PRs). All PRs must come with associated unit tests and pass the test suite in order to be merged.
 
-## Depenendencies
+## Dependencies
 
 To install the dependencies for the test suite, install the `[dev]` extras:
 
