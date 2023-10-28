@@ -23,7 +23,7 @@ print(atoms.calc.results)
 
 !!! Info
 
-    The output of the pretty print statement is shown below:
+    The output of the print statement is shown below:
 
     ```python
     {'attributes': {'atomcharges': {'mulliken': [-0.561, 0.281, 0.281]},
