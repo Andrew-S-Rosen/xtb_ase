@@ -45,8 +45,6 @@ print(atoms.calc.results)
     'energy': -156.96750016825985}
     ```
 
-The logfile will automatically be written out as `xtb.out`, which can also be investigated as you see fit.
-
 !!! Note
 
     You should never specify the `--input` (`-I`) or coordinate file command-line arguments. The `xtb_ase` calculator will take care of those automatically.
