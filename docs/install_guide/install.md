@@ -13,7 +13,7 @@ conda install -c conda-forge xtb
 Currently, the `xtb_ase` package relies on actively developed branches of `ase` and `cclib`. To install these, you can use the following commands:
 
 ```bash
-pip install git+https://gitlab.com/ase/ase/-/archive/master/ase-master.zip
+pip install https://gitlab.com/ase/ase/-/archive/master/ase-master.zip
 pip install git+https://github.com/cclib/cclib.git@refs/pull/1296/head
 ```
 
