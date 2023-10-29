@@ -199,7 +199,7 @@ class XTB(GenericFileIOCalculator):
         self,
         profile: XTBProfile | None = None,
         directory: Path | str = ".",
-        **parameters,
+        **kwargs,
     ) -> None:
         """
         Initialize the xTB calculator.
@@ -210,7 +210,7 @@ class XTB(GenericFileIOCalculator):
             The xTB profile to use.
         directory
             The path to the directory to run the xTB executable in.
-        **parameters
+        **kwargs
             The xTB parameters to use.
 
         Returns
@@ -225,5 +225,5 @@ class XTB(GenericFileIOCalculator):
             template=_XTBTemplate(),
             profile=profile,
             directory=directory,
-            parameters=parameters,
+            parameters=kwargs,
         )
