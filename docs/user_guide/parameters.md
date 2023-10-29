@@ -61,11 +61,12 @@ For more complex inputs, xTB supports a [detailed input](https://xtb-docs.readth
 
 ```python
 from ase.build import molecule
-from xtb_ase import XTB
+from xtb_ase import XTB, XTBProfile
 
 atoms = molecule("H2O")
 
-atoms.calc = XTB(gfn={"method": 1})
+profile = XTBProfile(["xtb", "--opt"])
+atoms.calc = XTB(profile=profile, gfn={"method": 1})
 
 atoms.get_potential_energy()
 print(atoms.calc.results)
