@@ -55,5 +55,3 @@ The `results` attribute of the calculator is a dictionary that contains all the 
 - `energy`: The total energy of the system in units of eV. This can be accessed directly via `atoms.get_potential_energy()`.
 - `forces`: The forces on the atoms in units of eV/Å. This can be accessed directly via `atoms.get_forces()`.
 - `attributes`: A dictionary containing all the parsed [cclib attributes](https://cclib.github.io/data_dev.html). The units are those specified by cclib.
-
-Regarding the `Atoms` object following a calculation, we have made the decision to ensure that its atomic configuration (e.g. positions) reflect the final geometry rather than the input geometry. This is not the case for all ASE calculators, but we believe it is the most intuitive behavior.
