@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from ase.atoms import Atoms
     from numpy.typing import NDArray
 
-    class Results(TypedDict):
+    class Results(TypedDict, total=False):
         energy: float  # eV
         forces: NDArray  # Nx3, eV/Å
         attributes: dict[str, Any] | None  # https://cclib.github.io/data_dev.html
