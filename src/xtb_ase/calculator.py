@@ -161,7 +161,7 @@ class _XTBTemplate(CalculatorTemplate):
             parameters=parameters,
         )
 
-    def read_results(self, directory: Path) -> Results:
+    def read_results(self, directory: Path | str) -> Results:
         """
         Use cclib to read the results from the xTB calculation.
 
@@ -175,7 +175,7 @@ class _XTBTemplate(CalculatorTemplate):
         Results
             The xTB results, formatted as a dictionary.
         """
-        cclib_obj = read_xtb(directory / self.output_file)
+        cclib_obj = read_xtb(Path(directory) / self.output_file)
 
         energy = cclib_obj.scfenergies[-1]
 
