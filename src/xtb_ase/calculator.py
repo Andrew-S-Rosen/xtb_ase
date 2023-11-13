@@ -128,7 +128,7 @@ class _XTBTemplate(CalculatorTemplate):
 
     def write_input(
         self,
-        profile: XTBProfile,
+        profile: XTBProfile,  # skipcq: PYL-W0613
         directory: Path | str,
         atoms: Atoms,
         parameters: dict[str, Any],
