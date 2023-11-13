@@ -128,6 +128,7 @@ class _XTBTemplate(CalculatorTemplate):
 
     def write_input(
         self,
+        profile: XTBProfile,
         directory: Path | str,
         atoms: Atoms,
         parameters: dict[str, Any],
