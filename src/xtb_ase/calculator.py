@@ -128,6 +128,7 @@ class _XTBTemplate(CalculatorTemplate):
 
     def write_input(
         self,
+        profile: XTBProfile,  # skipcq: PYL-W0613
         directory: Path | str,
         atoms: Atoms,
         parameters: dict[str, Any],
@@ -188,6 +189,9 @@ class _XTBTemplate(CalculatorTemplate):
             results["forces"] = cclib_obj.grads[-1, :, :]
 
         return results
+
+    def load_profile(self, cfg, **kwargs):
+        return XTBProfile.from_config(cfg, self.name, **kwargs)
 
 
 class XTB(GenericFileIOCalculator):
