@@ -189,6 +189,9 @@ class _XTBTemplate(CalculatorTemplate):
 
         return results
 
+    def load_profile(self, cfg, **kwargs):
+        return XTBProfile.from_config(cfg, self.name, **kwargs)
+
 
 class XTB(GenericFileIOCalculator):
     """
