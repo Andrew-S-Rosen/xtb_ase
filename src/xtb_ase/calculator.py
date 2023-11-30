@@ -191,7 +191,7 @@ class _XTBTemplate(CalculatorTemplate):
         cclib_obj = read_xtb(filepaths)
 
         energy = cclib_obj.scfenergies[-1]
-        forces = cclib_obj.grads[-1] if hasattr(cclib_obj, "grads") else None
+        forces = cclib_obj.grads[-1, :, :] if hasattr(cclib_obj, "grads") else None
 
         results = {
             "energy": energy,
