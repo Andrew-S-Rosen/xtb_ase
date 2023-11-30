@@ -201,7 +201,6 @@ class XTB(GenericFileIOCalculator):
         self,
         profile: XTBProfile | None = None,
         directory: Path | str = ".",
-        ncores: int | None = 1,
         **kwargs,
     ) -> None:
         """
@@ -213,8 +212,6 @@ class XTB(GenericFileIOCalculator):
             An instantiated [xtb_ase.calculator.XTBProfile][] object to use.
         directory
             The path to the directory to run the xTB calculation in.
-        ncores
-            The number of cores to use for the xTB calculation.
         **kwargs
             The xTB parameters to be written out to a detailed input file, e.g.
             `gfn={"method": 1}`. See https://github.com/grimme-lab/xtb/blob/main/man/xcontrol.7.adoc.
@@ -225,8 +222,6 @@ class XTB(GenericFileIOCalculator):
         """
 
         profile = profile or XTBProfile()
-        if ncores > 1 and "--parallel" not in profile.argv:
-            profile.argv.extend(["--parallel", str(ncores)])
         directory = Path(directory).expanduser().resolve()
 
         super().__init__(

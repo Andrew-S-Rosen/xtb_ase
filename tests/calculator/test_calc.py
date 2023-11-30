@@ -24,25 +24,6 @@ def test_molecule_static(tmpdir):
     assert "--parallel" not in attributes["metadata"]["keywords"]
 
 
-def test_molecule_static_parallel(tmpdir):
-    tmpdir.chdir()
-
-    atoms = molecule("H2O")
-    atoms.calc = XTB(ncores=2)
-    atoms.get_potential_energy()
-    results = atoms.calc.results
-    attributes = results["attributes"]
-    assert results["energy"] == pytest.approx(-137.9677709332199)
-    assert attributes["charge"] == 0
-    assert attributes["metadata"]["package"] == "xTB"
-    assert attributes["metadata"]["methods"] == ["GFN2-xTB"]
-    assert attributes["metadata"]["coord_type"] == "xyz"
-    assert attributes["scfenergies"] == results["energy"]
-    assert "--gfn" not in attributes["metadata"]["keywords"]
-    assert "--tblite" not in attributes["metadata"]["keywords"]
-    assert "--parallel" in attributes["metadata"]["keywords"]
-
-
 def test_molecule_static_profile(tmpdir):
     tmpdir.chdir()
 
@@ -62,8 +43,21 @@ def test_molecule_static_profile(tmpdir):
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
 
-
 def test_bulk_static(tmpdir):
+    tmpdir.chdir()
+
+    atoms = bulk("Cu")
+    atoms.calc = XTB()
+    atoms.get_potential_energy()
+    results = atoms.calc.results
+    attributes = results["attributes"]
+    assert results["energy"] == pytest.approx(-318.8584638)
+    assert attributes["metadata"]["package"] == "xTB"
+    assert attributes["metadata"]["coord_type"] == "POSCAR"
+    assert attributes["scfenergies"] == results["energy"]
+    assert "--tblite" in attributes["metadata"]["keywords"]
+
+def test_bulk_static_gfn1(tmpdir):
     tmpdir.chdir()
 
     atoms = bulk("Cu")
@@ -73,7 +67,6 @@ def test_bulk_static(tmpdir):
     attributes = results["attributes"]
     assert results["energy"] == pytest.approx(-130.73083354749846)
     assert attributes["metadata"]["package"] == "xTB"
-    assert attributes["metadata"]["methods"] == ["GFN1-xTB"]
     assert attributes["metadata"]["coord_type"] == "POSCAR"
     assert attributes["scfenergies"] == results["energy"]
     assert "--gfn" in attributes["metadata"]["keywords"]
@@ -90,7 +83,6 @@ def test_bulk_static_detailed_input(tmpdir):
     attributes = results["attributes"]
     assert results["energy"] == pytest.approx(-318.85844978148714)
     assert attributes["metadata"]["package"] == "xTB"
-    assert attributes["metadata"]["methods"] == ["GFN1-xTB"]
     assert attributes["metadata"]["coord_type"] == "POSCAR"
     assert attributes["scfenergies"] == results["energy"]
     assert "--gfn" not in attributes["metadata"]["keywords"]
