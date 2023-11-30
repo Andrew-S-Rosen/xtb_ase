@@ -8,6 +8,7 @@ from subprocess import check_call
 from typing import TYPE_CHECKING
 
 from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
+from ase import units
 from monty.json import jsanitize
 
 from xtb_ase._io import read_xtb, write_xtb
@@ -197,7 +198,7 @@ class _XTBTemplate(CalculatorTemplate):
             "attributes": jsanitize(cclib_obj.getattributes()),
         }
         if forces is not None:
-            results["forces"] = forces
+            results["forces"] = forces * units.Hartree / units.Bohr
 
         if hasattr(cclib_obj, "grads"):
             results["forces"] = cclib_obj.grads[-1, :, :]
