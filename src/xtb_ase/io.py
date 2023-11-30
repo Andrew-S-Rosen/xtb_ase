@@ -81,10 +81,4 @@ def read_xtb(output_filepath: Path | str) -> ccData:
     cclib_obj
         The cclib object containing the xTB results.
     """
-    cclib_obj = ccread(output_filepath, logging.ERROR)
-
-    if not cclib_obj:
-        msg = f"Could not read {output_filepath}"
-        raise RuntimeError(msg)
-
-    return cclib_obj
+    return ccread(output_filepath, logging.ERROR)
