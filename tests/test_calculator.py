@@ -20,7 +20,7 @@ def test_molecule_static(tmpdir):
     assert attributes["metadata"]["coord_type"] == "xyz"
     assert attributes["scfenergies"] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
-    
+
 
 def test_molecule_static_gfnff(tmpdir):
     tmpdir.chdir()
@@ -38,7 +38,8 @@ def test_molecule_static_gfnff(tmpdir):
     assert attributes["scfenergies"] == results["energy"]
     assert "--gfnff" in attributes["metadata"]["keywords"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
-    
+
+
 def test_molecule_static_profile(tmpdir):
     tmpdir.chdir()
 
@@ -53,6 +54,7 @@ def test_molecule_static_profile(tmpdir):
     assert attributes["scfenergies"] == results["energy"]
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
+
 
 def test_bulk_static(tmpdir):
     tmpdir.chdir()
@@ -69,6 +71,7 @@ def test_bulk_static(tmpdir):
     assert "--tblite" in attributes["metadata"]["keywords"]
     assert "--spinpol" in attributes["metadata"]["keywords"]
 
+
 def test_molecule_spin_without_spinpol(tmpdir):
     tmpdir.chdir()
 
@@ -83,6 +86,7 @@ def test_molecule_spin_without_spinpol(tmpdir):
     assert attributes["scfenergies"] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
     assert "--spinpol" not in attributes["metadata"]["keywords"]
+
 
 def test_bulk_static_gfn1(tmpdir):
     tmpdir.chdir()
@@ -114,6 +118,7 @@ def test_bulk_static_detailed_input(tmpdir):
     assert attributes["scfenergies"] == results["energy"]
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
+
 
 def test_bad(tmpdir):
     tmpdir.chdir()
