@@ -54,7 +54,7 @@ def test_molecule_static_profile(tmpdir):
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
 
-def test_molecule_spin(tmpdir):
+def test_bulk_static(tmpdir):
     tmpdir.chdir()
 
     atoms = molecule("CH3")
