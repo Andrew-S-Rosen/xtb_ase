@@ -200,9 +200,6 @@ class _XTBTemplate(CalculatorTemplate):
         if forces is not None:
             results["forces"] = forces * units.Hartree / units.Bohr
 
-        if hasattr(cclib_obj, "grads"):
-            results["forces"] = cclib_obj.grads[-1, :, :]
-
         return results
 
     def load_profile(self, cfg, **kwargs):
