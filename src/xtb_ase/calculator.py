@@ -3,7 +3,6 @@ ASE calculator for xtb_ase
 """
 from __future__ import annotations
 
-import multiprocessing
 from pathlib import Path
 from subprocess import check_call
 from typing import TYPE_CHECKING
@@ -45,10 +44,7 @@ class XTBProfile:
         -------
         None
         """
-        cpu_count = multiprocessing.cpu_count()
-        default_argv = (
-            ["xtb", "--parallel", str(cpu_count)] if cpu_count > 1 else ["xtb"]
-        )
+        default_argv = ["xtb"]
         self.argv = argv or default_argv
 
     def run(
@@ -154,6 +150,8 @@ class _XTBTemplate(CalculatorTemplate):
         """
         self.periodic = bool(atoms.pbc.all())
         self.geom_file = "POSCAR" if self.periodic else "coord.xyz"
+        if self.periodic and "--tblite" not in profile.argv:
+            profile.argv.append("--tblite")
 
         write_xtb(
             atoms,
@@ -211,11 +209,12 @@ class XTB(GenericFileIOCalculator):
         Parameters
         ----------
         profile
-            The xTB profile to use.
+            An instantiated [xtb_ase.calculator.XTBProfile][] object to use.
         directory
-            The path to the directory to run the xTB executable in.
+            The path to the directory to run the xTB calculation in.
         **kwargs
-            The xTB parameters to use.
+            The xTB parameters to be written out to a detailed input file, e.g.
+            `gfn={"method": 1}`. See https://github.com/grimme-lab/xtb/blob/main/man/xcontrol.7.adoc.
 
         Returns
         -------
