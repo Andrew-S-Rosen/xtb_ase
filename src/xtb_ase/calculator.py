@@ -255,7 +255,7 @@ class XTB(GenericFileIOCalculator):
             profile.argv.extend(["--gfnff"])
         else:
             raise ValueError(f"Unsupported method {method}")
-    
+
         if "--grad" not in profile.argv:
             profile.argv.append("--grad")
 
