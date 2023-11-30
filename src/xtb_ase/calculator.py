@@ -202,7 +202,7 @@ class XTB(GenericFileIOCalculator):
         self,
         profile: XTBProfile | None = None,
         directory: Path | str = ".",
-        method: Literal["gfn0-xtb", "gfn1-xtb", "gfn2-xTB", "gfn-ff"] = "GFN2-xTB",
+        method: Literal["gfn0-xtb", "gfn1-xtb", "gfn2-xTB", "gfn-ff"] = "gfn2-xtb",
         charge: int = 0,
         uhf: int = 0,
         spinpol: bool | None = None,
@@ -218,7 +218,7 @@ class XTB(GenericFileIOCalculator):
         directory
             The path to the directory to run the xTB calculation in.
         method
-            The xTB method to use, e.g. "GFN2-xTB".
+            The xTB method to use. Case-insensitive.
         charge
             The net charge of the system.
         uhf
