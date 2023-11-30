@@ -7,8 +7,8 @@ from pathlib import Path
 from subprocess import check_call
 from typing import TYPE_CHECKING
 
-from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
 from ase import units
+from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
 from monty.json import jsanitize
 
 from xtb_ase._io import read_xtb, write_xtb
@@ -265,7 +265,7 @@ class XTB(GenericFileIOCalculator):
             profile.argv.extend(["--gfnff"])
         else:
             raise ValueError(f"Unsupported method {method}")
-    
+
         if "--grad" not in profile.argv:
             profile.argv.append("--grad")
 
