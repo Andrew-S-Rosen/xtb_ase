@@ -1,5 +1,7 @@
 import pytest
+
 from xtb_ase.io import read_xtb
+
 
 def test_bad_read(tmpdir):
     tmpdir.chdir()
