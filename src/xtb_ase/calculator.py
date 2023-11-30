@@ -13,7 +13,7 @@ from monty.json import jsanitize
 from xtb_ase.io import read_xtb, write_xtb
 
 if TYPE_CHECKING:
-    from typing import Any, TypedDict
+    from typing import Any, TypedDict,Literal
 
     from ase.atoms import Atoms
     from numpy.typing import NDArray
@@ -36,9 +36,9 @@ class XTBProfile:
         Parameters
         ----------
         argv
-            The command line arguments to the xTB executable. Do not specify an
-            input file, i.e. --input (-I), or the geometry file, as these will be
-            automatically added.
+            The command line arguments to the xTB executable, e.g. `["xtb", "--tblite"]`.
+            Do not specify an input file, i.e. --input (-I), or the geometry file,
+            as these will be automatically added.
 
         Returns
         -------
@@ -73,6 +73,7 @@ class XTBProfile:
         None
         """
         cmd = self.argv + ["--input", input_filename, geom_filename]
+        cmd = [str(arg) for arg in cmd]
         with open(output_filename, "w") as fd:
             check_call(cmd, stdout=fd, cwd=directory)
 
@@ -201,6 +202,10 @@ class XTB(GenericFileIOCalculator):
         self,
         profile: XTBProfile | None = None,
         directory: Path | str = ".",
+        method: Literal["gfn0-xtb", "gfn1-xtb", "gfn2-xTB", "gfn-ff"] = "gfn2-xtb",
+        charge: int = 0,
+        uhf: int = 0,
+        spinpol: bool | None = None,
         **kwargs,
     ) -> None:
         """
@@ -212,9 +217,18 @@ class XTB(GenericFileIOCalculator):
             An instantiated [xtb_ase.calculator.XTBProfile][] object to use.
         directory
             The path to the directory to run the xTB calculation in.
+        method
+            The xTB method to use. Case-insensitive.
+        charge
+            The net charge of the system.
+        uhf
+            The number of unpaired electrons in the system.
+        spinpol
+            Whether to use spin-polarized xTB. If None, `spinpol` will be automatically
+            set to True if `uhf` > 0.
         **kwargs
-            The xTB parameters to be written out to a detailed input file, e.g.
-            `gfn={"method": 1}`. See https://github.com/grimme-lab/xtb/blob/main/man/xcontrol.7.adoc.
+            Any additional xTB parameters to be written out to a detailed input file, e.g. in the format
+            of `scc={"temp": 500}`. See https://github.com/grimme-lab/xtb/blob/main/man/xcontrol.7.adoc.
 
         Returns
         -------
@@ -224,6 +238,21 @@ class XTB(GenericFileIOCalculator):
         profile = profile or XTBProfile()
         directory = Path(directory).expanduser().resolve()
 
+        profile.argv.extend(["--chrg", f"{charge}"])
+        profile.argv.extend(["--uhf", f"{uhf}"])
+
+        if spinpol is None and uhf > 0:
+            profile.argv.append("--spinpol")
+            if "--tblite" not in profile.argv:
+                profile.argv.append("--tblite")
+
+        if method.lower() in ["gfn0-xtb", "gfn1-xtb", "gfn2-xtb"]:
+            profile.argv.extend(["--gfn", int(method[3])])
+        elif method.lower() == "gfn-ff":
+            profile.argv.extend(["--gfnff"])
+        else:
+            raise ValueError(f"Unsupported method {method}")
+    
         super().__init__(
             template=_XTBTemplate(),
             profile=profile,
