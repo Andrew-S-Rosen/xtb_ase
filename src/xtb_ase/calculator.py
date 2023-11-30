@@ -178,11 +178,14 @@ class _XTBTemplate(CalculatorTemplate):
         cclib_obj = read_xtb(Path(directory) / self.output_file)
 
         energy = cclib_obj.scfenergies[-1]
+        forces = cclib_obj.grads[-1] if hasattr(cclib_obj, "grads") else None
 
         results = {
             "energy": energy,
             "attributes": jsanitize(cclib_obj.getattributes()),
         }
+        if forces:
+            results["forces"] = forces
 
         if getattr(cclib_obj, "grads", None):
             results["forces"] = cclib_obj.grads[-1, :, :]
