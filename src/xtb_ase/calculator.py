@@ -103,6 +103,8 @@ class _XTBTemplate(CalculatorTemplate):
 
         self.input_file = f"{label}.inp"
         self.output_file = f"{label}.out"
+        self.grad_file = "gradient"
+        self.hess_file = "hessian"
         self.periodic = None
         self.geom_file = None
 
@@ -175,7 +177,17 @@ class _XTBTemplate(CalculatorTemplate):
         Results
             The xTB results, formatted as a dictionary.
         """
-        cclib_obj = read_xtb(Path(directory) / self.output_file)
+        output_file = Path(directory) / self.output_file
+        grad_file = Path(directory) / self.grad_file
+        hess_file = Path(directory) / self.hess_file
+
+        filepaths = [output_file]
+        if grad_file.exists():
+            filepaths.append(grad_file)
+        if hess_file.exists():
+            filepaths.append(hess_file)
+
+        cclib_obj = read_xtb(filepaths)
 
         energy = cclib_obj.scfenergies[-1]
         forces = cclib_obj.grads[-1] if hasattr(cclib_obj, "grads") else None
@@ -184,10 +196,10 @@ class _XTBTemplate(CalculatorTemplate):
             "energy": energy,
             "attributes": jsanitize(cclib_obj.getattributes()),
         }
-        if forces:
+        if forces is not None:
             results["forces"] = forces
 
-        if getattr(cclib_obj, "grads", None):
+        if hasattr(cclib_obj, "grads"):
             results["forces"] = cclib_obj.grads[-1, :, :]
 
         return results
