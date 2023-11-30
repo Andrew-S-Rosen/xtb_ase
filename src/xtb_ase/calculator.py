@@ -13,7 +13,7 @@ from monty.json import jsanitize
 from xtb_ase._io import read_xtb, write_xtb
 
 if TYPE_CHECKING:
-    from typing import Any, TypedDict,Literal
+    from typing import Any, Literal, TypedDict
 
     from ase.atoms import Atoms
     from numpy.typing import NDArray
@@ -252,7 +252,7 @@ class XTB(GenericFileIOCalculator):
             profile.argv.extend(["--gfnff"])
         else:
             raise ValueError(f"Unsupported method {method}")
-    
+
         super().__init__(
             template=_XTBTemplate(),
             profile=profile,
