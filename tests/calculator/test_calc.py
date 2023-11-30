@@ -1,8 +1,9 @@
-from ase.build import bulk, molecule
 import pytest
-from xtb_ase.calculator import XTB
-from xtb_ase.calculator import XTBProfile
+from ase.build import bulk, molecule
 from numpy.testing import assert_allclose
+
+from xtb_ase.calculator import XTB, XTBProfile
+
 
 def test_molecule_static(tmpdir):
     tmpdir.chdir()
@@ -22,6 +23,7 @@ def test_molecule_static(tmpdir):
     assert "--tblite" not in attributes["metadata"]["keywords"]
     assert "--parallel" not in attributes["metadata"]["keywords"]
 
+
 def test_molecule_static_parallel(tmpdir):
     tmpdir.chdir()
 
@@ -40,15 +42,16 @@ def test_molecule_static_parallel(tmpdir):
     assert "--tblite" not in attributes["metadata"]["keywords"]
     assert "--parallel" in attributes["metadata"]["keywords"]
 
+
 def test_molecule_static_profile(tmpdir):
     tmpdir.chdir()
 
     atoms = molecule("H2O")
-    atoms.calc = XTB(profile=XTBProfile(argv=["xtb","--gfn", "1"]))
+    atoms.calc = XTB(profile=XTBProfile(argv=["xtb", "--gfn", "1"]))
     atoms.get_potential_energy()
     results = atoms.calc.results
     attributes = results["attributes"]
-    assert results["energy"] == pytest.approx(-156.96750016825985 )
+    assert results["energy"] == pytest.approx(-156.96750016825985)
     assert attributes["charge"] == 0
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["methods"] == ["GFN1-xTB"]
@@ -59,21 +62,23 @@ def test_molecule_static_profile(tmpdir):
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
 
+
 def test_bulk_static(tmpdir):
     tmpdir.chdir()
 
     atoms = bulk("Cu")
-    atoms.calc = XTB(profile=XTBProfile(argv=["xtb","--gfn", "1"]))
+    atoms.calc = XTB(profile=XTBProfile(argv=["xtb", "--gfn", "1"]))
     atoms.get_potential_energy()
     results = atoms.calc.results
     attributes = results["attributes"]
-    assert results["energy"] == pytest.approx(-130.73083354749846 )
+    assert results["energy"] == pytest.approx(-130.73083354749846)
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["methods"] == ["GFN1-xTB"]
     assert attributes["metadata"]["coord_type"] == "POSCAR"
     assert attributes["scfenergies"] == results["energy"]
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
+
 
 def test_bulk_static_detailed_input(tmpdir):
     tmpdir.chdir()
@@ -83,7 +88,7 @@ def test_bulk_static_detailed_input(tmpdir):
     atoms.get_potential_energy()
     results = atoms.calc.results
     attributes = results["attributes"]
-    assert results["energy"] == pytest.approx( -318.85844978148714)
+    assert results["energy"] == pytest.approx(-318.85844978148714)
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["methods"] == ["GFN1-xTB"]
     assert attributes["metadata"]["coord_type"] == "POSCAR"
