@@ -1,6 +1,6 @@
 import pytest
 from ase.build import bulk, molecule
-
+from ase.optimize import BFGS
 from xtb_ase.calculator import XTB, XTBProfile
 
 
@@ -119,3 +119,21 @@ def test_bad(tmpdir):
 
     with pytest.raises(ValueError):
         XTB(method="bad")
+
+# def test_molecule_relax(tmpdir):
+#     tmpdir.chdir()
+
+#     atoms = molecule("H2O")
+#     atoms.calc = XTB()
+#     dyn = BFGS(atoms)
+#     dyn.run(fmax=0.01)
+#     # results = atoms.calc.results
+#     # attributes = results["attributes"]
+#     # assert results["energy"] == pytest.approx(-137.9677709332199)
+#     # assert attributes["charge"] == 0
+#     # assert attributes["metadata"]["package"] == "xTB"
+#     # assert attributes["metadata"]["methods"] == ["GFN2-xTB"]
+#     # assert attributes["metadata"]["coord_type"] == "xyz"
+#     # assert attributes["scfenergies"] == results["energy"]
+#     # assert "--tblite" not in attributes["metadata"]["keywords"]
+    
