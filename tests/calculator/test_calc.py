@@ -43,6 +43,7 @@ def test_molecule_static_profile(tmpdir):
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
 
+
 def test_bulk_static(tmpdir):
     tmpdir.chdir()
 
@@ -56,6 +57,7 @@ def test_bulk_static(tmpdir):
     assert attributes["metadata"]["coord_type"] == "POSCAR"
     assert attributes["scfenergies"] == results["energy"]
     assert "--tblite" in attributes["metadata"]["keywords"]
+
 
 def test_bulk_static_gfn1(tmpdir):
     tmpdir.chdir()
