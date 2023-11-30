@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
 from monty.json import jsanitize
 
-from xtb_ase.io import read_xtb, write_xtb
+from xtb_ase._io import read_xtb, write_xtb
 
 if TYPE_CHECKING:
     from typing import Any, TypedDict,Literal
