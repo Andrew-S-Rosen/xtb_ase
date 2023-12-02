@@ -4,8 +4,8 @@ from ase.optimize import BFGS
 from xtb_ase.calculator import XTB, XTBProfile
 
 
-def test_molecule_static(tmpdir):
-    tmpdir.chdir()
+def test_molecule_static(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
     atoms = molecule("H2O")
     atoms.calc = XTB()
@@ -21,8 +21,8 @@ def test_molecule_static(tmpdir):
     assert "--tblite" not in attributes["metadata"]["keywords"]
     
 
-def test_molecule_static_gfnff(tmpdir):
-    tmpdir.chdir()
+def test_molecule_static_gfnff(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
     atoms = molecule("H2O")
     atoms.calc = XTB(method="gfn-ff")
@@ -38,8 +38,8 @@ def test_molecule_static_gfnff(tmpdir):
     assert "--gfnff" in attributes["metadata"]["keywords"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
     
-def test_molecule_static_profile(tmpdir):
-    tmpdir.chdir()
+def test_molecule_static_profile(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
     atoms = molecule("H2O")
     atoms.calc = XTB(profile=XTBProfile(argv=["xtb", "--tblite"]))
@@ -53,8 +53,8 @@ def test_molecule_static_profile(tmpdir):
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
 
-def test_bulk_static(tmpdir):
-    tmpdir.chdir()
+def test_bulk_static(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
     atoms = molecule("CH3")
     atoms.calc = XTB(uhf=1)
@@ -68,8 +68,8 @@ def test_bulk_static(tmpdir):
     assert "--tblite" in attributes["metadata"]["keywords"]
     assert "--spinpol" in attributes["metadata"]["keywords"]
 
-def test_molecule_spin_without_spinpol(tmpdir):
-    tmpdir.chdir()
+def test_molecule_spin_without_spinpol(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
     atoms = molecule("CH3")
     atoms.calc = XTB(uhf=1, spinpol=False)
@@ -83,8 +83,8 @@ def test_molecule_spin_without_spinpol(tmpdir):
     assert "--tblite" not in attributes["metadata"]["keywords"]
     assert "--spinpol" not in attributes["metadata"]["keywords"]
 
-def test_bulk_static_gfn1(tmpdir):
-    tmpdir.chdir()
+def test_bulk_static_gfn1(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
     atoms = bulk("Cu")
     atoms.calc = XTB(method="GFN1-xTB")
@@ -99,8 +99,8 @@ def test_bulk_static_gfn1(tmpdir):
     assert "--tblite" in attributes["metadata"]["keywords"]
 
 
-def test_bulk_static_detailed_input(tmpdir):
-    tmpdir.chdir()
+def test_bulk_static_detailed_input(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
     atoms = bulk("Cu")
     atoms.calc = XTB(method="gfn1-xtb", scc={"temp": 500})
@@ -114,14 +114,14 @@ def test_bulk_static_detailed_input(tmpdir):
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
 
-def test_bad(tmpdir):
-    tmpdir.chdir()
+def test_bad(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
     with pytest.raises(ValueError):
         XTB(method="bad")
 
-# def test_molecule_relax(tmpdir):
-#     tmpdir.chdir()
+# def test_molecule_relax(tmp_path, monkeypatch):
+#    monkeypatch.chdir(tmp_path)
 
 #     atoms = molecule("H2O")
 #     atoms.calc = XTB()
