@@ -1,6 +1,7 @@
 import pytest
 from ase.build import bulk, molecule
 from ase.optimize import BFGS
+
 from xtb_ase.calculator import XTB, XTBProfile
 
 
@@ -19,7 +20,7 @@ def test_molecule_static(tmp_path, monkeypatch):
     assert attributes["metadata"]["coord_type"] == "xyz"
     assert attributes["scfenergies"] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
-    
+
 
 def test_molecule_static_gfnff(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
@@ -37,7 +38,8 @@ def test_molecule_static_gfnff(tmp_path, monkeypatch):
     assert attributes["scfenergies"] == results["energy"]
     assert "--gfnff" in attributes["metadata"]["keywords"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
-    
+
+
 def test_molecule_static_profile(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
@@ -52,6 +54,7 @@ def test_molecule_static_profile(tmp_path, monkeypatch):
     assert attributes["scfenergies"] == results["energy"]
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
+
 
 def test_bulk_static(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
@@ -68,6 +71,7 @@ def test_bulk_static(tmp_path, monkeypatch):
     assert "--tblite" in attributes["metadata"]["keywords"]
     assert "--spinpol" in attributes["metadata"]["keywords"]
 
+
 def test_molecule_spin_without_spinpol(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
@@ -82,6 +86,7 @@ def test_molecule_spin_without_spinpol(tmp_path, monkeypatch):
     assert attributes["scfenergies"] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
     assert "--spinpol" not in attributes["metadata"]["keywords"]
+
 
 def test_bulk_static_gfn1(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
@@ -114,11 +119,13 @@ def test_bulk_static_detailed_input(tmp_path, monkeypatch):
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
 
+
 def test_bad(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
     with pytest.raises(ValueError):
         XTB(method="bad")
+
 
 # def test_molecule_relax(tmp_path, monkeypatch):
 #    monkeypatch.chdir(tmp_path)
@@ -136,4 +143,3 @@ def test_bad(tmp_path, monkeypatch):
 #     # assert attributes["metadata"]["coord_type"] == "xyz"
 #     # assert attributes["scfenergies"] == results["energy"]
 #     # assert "--tblite" not in attributes["metadata"]["keywords"]
-    
