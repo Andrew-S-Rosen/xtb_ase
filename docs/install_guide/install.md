@@ -14,7 +14,7 @@ Currently, the `xtb_ase` package relies on actively developed branches of `ase` 
 
 ```bash
 pip install https://gitlab.com/ase/ase/-/archive/master/ase-master.zip
-pip install git+https://github.com/cclib/cclib.git@refs/pull/1296/head
+pip install git+https://github.com/cclib/cclib.git
 ```
 
 ## Installing `xtb_ase`
