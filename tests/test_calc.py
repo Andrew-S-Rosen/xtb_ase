@@ -127,19 +127,40 @@ def test_bad(tmp_path, monkeypatch):
         XTB(method="bad")
 
 
-# def test_molecule_relax(tmp_path, monkeypatch):
-#    monkeypatch.chdir(tmp_path)
+def test_molecule_relax(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
 
-#     atoms = molecule("H2O")
-#     atoms.calc = XTB()
-#     dyn = BFGS(atoms)
-#     dyn.run(fmax=0.01)
-#     # results = atoms.calc.results
-#     # attributes = results["attributes"]
-#     # assert results["energy"] == pytest.approx(-137.9677709332199)
-#     # assert attributes["charge"] == 0
-#     # assert attributes["metadata"]["package"] == "xTB"
-#     # assert attributes["metadata"]["methods"] == ["GFN2-xTB"]
-#     # assert attributes["metadata"]["coord_type"] == "xyz"
-#     # assert attributes["scfenergies"] == results["energy"]
-#     # assert "--tblite" not in attributes["metadata"]["keywords"]
+    atoms = molecule("H2O")
+    atoms.calc = XTB()
+    dyn = BFGS(atoms)
+    dyn.run(fmax=0.01)
+    results = atoms.calc.results
+    attributes = results["attributes"]
+    assert atoms != molecule("H2O")
+    assert results["energy"] == pytest.approx(-137.976537)
+    assert attributes["charge"] == 0
+    assert attributes["metadata"]["package"] == "xTB"
+    assert attributes["metadata"]["methods"] == ["GFN2-xTB"]
+    assert attributes["metadata"]["coord_type"] == "xyz"
+    assert attributes["scfenergies"] == results["energy"]
+    assert "--tblite" not in attributes["metadata"]["keywords"]
+
+def test_molecule_internal_relax(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    atoms = molecule("H2O")
+    profile = XTBProfile(["xtb", "--opt"])
+    atoms.calc = XTB(profile=profile)
+
+    atoms.get_potential_energy()
+
+    results = atoms.calc.results
+    attributes = results["attributes"]
+    assert results["final_atoms"] != atoms
+    assert results["energy"] == pytest.approx(-137.97654081)
+    assert attributes["charge"] == 0
+    assert attributes["metadata"]["package"] == "xTB"
+    assert attributes["metadata"]["methods"] == ["GFN2-xTB"]
+    assert attributes["metadata"]["coord_type"] == "xyz"
+    assert attributes["scfenergies"] == results["energy"]
+    assert "--tblite" not in attributes["metadata"]["keywords"]

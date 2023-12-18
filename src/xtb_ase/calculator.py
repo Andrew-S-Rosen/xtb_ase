@@ -193,8 +193,7 @@ class _XTBTemplate(CalculatorTemplate):
 
         atom_coords = cclib_obj.atomcoords[-1]
         atom_nos = cclib_obj.atomnos
-        if len(atom_coords) > 0:
-            final_atoms = makease(atom_coords, atom_nos)
+        final_atoms = makease(atom_coords, atom_nos) if len(atom_coords) else None
 
         energy = cclib_obj.scfenergies[-1]
         forces = (
