@@ -6,9 +6,10 @@ from __future__ import annotations
 from pathlib import Path
 from subprocess import check_call
 from typing import TYPE_CHECKING
-from cclib.bridge.cclib2ase import makease
-from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
+
 from ase import units
+from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
+from cclib.bridge.cclib2ase import makease
 from monty.json import jsanitize
 
 from xtb_ase._io import read_xtb, write_xtb
@@ -194,9 +195,13 @@ class _XTBTemplate(CalculatorTemplate):
         atom_nos = cclib_obj.atomnos
         if len(atom_coords) > 0:
             final_atoms = makease(atom_coords, atom_nos)
- 
+
         energy = cclib_obj.scfenergies[-1]
-        forces = -cclib_obj.grads[-1, :, :] * units.Hartree / units.Bohr if hasattr(cclib_obj, "grads") else None
+        forces = (
+            -cclib_obj.grads[-1, :, :] * units.Hartree / units.Bohr
+            if hasattr(cclib_obj, "grads")
+            else None
+        )
 
         results = {
             "energy": energy,
@@ -206,7 +211,7 @@ class _XTBTemplate(CalculatorTemplate):
             results["final_atoms"] = final_atoms
 
         if forces is not None:
-            results["forces"] = forces 
+            results["forces"] = forces
 
         return results
 
@@ -273,7 +278,7 @@ class XTB(GenericFileIOCalculator):
             profile.argv.extend(["--gfnff"])
         else:
             raise ValueError(f"Unsupported method {method}")
-    
+
         if "--grad" not in profile.argv:
             profile.argv.append("--grad")
 
