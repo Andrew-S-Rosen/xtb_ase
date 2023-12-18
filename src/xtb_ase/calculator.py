@@ -191,14 +191,14 @@ class _XTBTemplate(CalculatorTemplate):
         cclib_obj = read_xtb(filepaths)
 
         energy = cclib_obj.scfenergies[-1]
-        forces = cclib_obj.grads[-1, :, :] if hasattr(cclib_obj, "grads") else None
+        forces = -cclib_obj.grads[-1, :, :] * units.Hartree / units.Bohr if hasattr(cclib_obj, "grads") else None
 
         results = {
             "energy": energy,
             "attributes": jsanitize(cclib_obj.getattributes()),
         }
         if forces is not None:
-            results["forces"] = forces * units.Hartree / units.Bohr
+            results["forces"] = forces 
 
         return results
 
