@@ -107,3 +107,7 @@ atoms.get_potential_energy()
 
 print(atoms.calc.results)
 ```
+
+!!! Warning "On the Mutability of `Atoms`"
+
+    In contrast with the use of an ASE optimizer, the input `Atoms` object is not updated in-place when calling `.get_potential_energy()`. Instead, this information is stored in `atoms.calc.results["final_atoms"]`.

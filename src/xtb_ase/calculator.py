@@ -6,7 +6,7 @@ from __future__ import annotations
 from pathlib import Path
 from subprocess import check_call
 from typing import TYPE_CHECKING
-
+from cclib.bridge.cclib2ase import makease
 from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
 from ase import units
 from monty.json import jsanitize
@@ -190,6 +190,11 @@ class _XTBTemplate(CalculatorTemplate):
 
         cclib_obj = read_xtb(filepaths)
 
+        atom_coords = cclib_obj.atomcoords[-1]
+        atom_nos = cclib_obj.atomnos
+        if len(atom_coords) > 0:
+            final_atoms = makease(atom_coords, atom_nos)
+ 
         energy = cclib_obj.scfenergies[-1]
         forces = -cclib_obj.grads[-1, :, :] * units.Hartree / units.Bohr if hasattr(cclib_obj, "grads") else None
 
@@ -197,6 +202,9 @@ class _XTBTemplate(CalculatorTemplate):
             "energy": energy,
             "attributes": jsanitize(cclib_obj.getattributes()),
         }
+        if final_atoms:
+            results["final_atoms"] = final_atoms
+
         if forces is not None:
             results["forces"] = forces 
 
