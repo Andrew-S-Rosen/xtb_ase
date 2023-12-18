@@ -145,6 +145,7 @@ def test_molecule_relax(tmp_path, monkeypatch):
     assert attributes["scfenergies"] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
 
+
 def test_molecule_internal_relax(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
