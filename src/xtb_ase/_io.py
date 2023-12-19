@@ -80,10 +80,12 @@ def read_xtb_results(
 
     Parameters
     ----------
-    output_filepath
+    output_file
         The path to the xTB output file.
-    grad_filepath
+    grad_file
         The path to the xTB gradient file.
+    xtb_opt_file
+        The path to the xTB .opt file.
 
     Returns
     -------
