@@ -21,7 +21,7 @@ atoms.get_potential_energy()
 print(atoms.calc.results)
 ```
 
-!!! Info
+??? Info "Example Output"
 
     The output of the print statement is shown below:
 
