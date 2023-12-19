@@ -106,6 +106,7 @@ class _XTBTemplate(CalculatorTemplate):
         self.grad_file = "gradient"
         self.periodic = None
         self.geom_file = None
+        self.xtb_opt_file = None
 
     def execute(self, directory: Path | str, profile: XTBProfile) -> None:
         """
