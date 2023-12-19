@@ -71,6 +71,7 @@ The `results` attribute of the calculator is a dictionary that contains all the 
 
 - `energy`: The total energy of the system in units of eV. This can be accessed directly via `atoms.get_potential_energy()`.
 - `forces`: The forces on the atoms in units of eV/Å. This can be accessed directly via `atoms.get_forces()`.
+- `final_atoms`: The final `Atoms` object after an internal relaxation, if relevant.
 - `attributes`: A dictionary containing all the parsed [cclib attributes](https://cclib.github.io/data_dev.html). The units are those specified by cclib.
 
 ## A Relaxation

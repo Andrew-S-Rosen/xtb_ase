@@ -21,7 +21,7 @@ if TYPE_CHECKING:
         energy: float  # eV
         final_atoms: Atoms
         forces: NDArray  # Nx3, eV/Å
-        cclib_attributes: dict[str, Any] | None  # https://cclib.github.io/data_dev.html
+        attributes: dict[str, Any] | None  # https://cclib.github.io/data_dev.html
 
 
 class XTBProfile:
