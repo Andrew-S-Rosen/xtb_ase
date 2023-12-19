@@ -232,7 +232,6 @@ class XTB(GenericFileIOCalculator):
         """
 
         profile = profile or XTBProfile()
-        directory = Path(directory).expanduser().resolve()
 
         profile.argv.extend(["--chrg", f"{charge}"])
         profile.argv.extend(["--uhf", f"{uhf}"])
