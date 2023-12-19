@@ -7,12 +7,9 @@ from pathlib import Path
 from subprocess import check_call
 from typing import TYPE_CHECKING
 
-from ase import units
 from ase.calculators.genericfileio import CalculatorTemplate, GenericFileIOCalculator
-from cclib.bridge.cclib2ase import makease
-from monty.json import jsanitize
 
-from xtb_ase._io import read_xtb, write_xtb
+from xtb_ase._io import read_xtb_results, write_xtb_inputs
 
 if TYPE_CHECKING:
     from typing import Any, Literal, TypedDict
@@ -22,6 +19,7 @@ if TYPE_CHECKING:
 
     class Results(TypedDict, total=False):
         energy: float  # eV
+        final_atoms: Atoms
         forces: NDArray  # Nx3, eV/Å
         attributes: dict[str, Any] | None  # https://cclib.github.io/data_dev.html
 
@@ -74,7 +72,7 @@ class XTBProfile:
         -------
         None
         """
-        cmd = self.argv + ["--input", input_filename, geom_filename]
+        cmd = self.argv + ["--input", input_filename, geom_filename, "--json"]
         cmd = [str(arg) for arg in cmd]
         with open(output_filename, "w") as fd:
             check_call(cmd, stdout=fd, cwd=directory)
@@ -106,7 +104,7 @@ class _XTBTemplate(CalculatorTemplate):
         self.input_file = f"{label}.inp"
         self.output_file = f"{label}.out"
         self.grad_file = "gradient"
-        self.hess_file = "hessian"
+        self.xtb_opt_file = "xtbopt.xyz"
         self.periodic = None
         self.geom_file = None
 
@@ -158,7 +156,7 @@ class _XTBTemplate(CalculatorTemplate):
         if self.periodic and "--tblite" not in profile.argv:
             profile.argv.append("--tblite")
 
-        write_xtb(
+        write_xtb_inputs(
             atoms,
             directory / self.input_file,
             directory / self.geom_file,
@@ -181,38 +179,11 @@ class _XTBTemplate(CalculatorTemplate):
         """
         output_file = Path(directory) / self.output_file
         grad_file = Path(directory) / self.grad_file
-        hess_file = Path(directory) / self.hess_file
+        xtb_opt_file = Path(directory) / self.xtb_opt_file
 
-        filepaths = [output_file]
-        if grad_file.exists():
-            filepaths.append(grad_file)
-        if hess_file.exists():
-            filepaths.append(hess_file)
-
-        cclib_obj = read_xtb(filepaths)
-
-        atom_coords = cclib_obj.atomcoords[-1]
-        atom_nos = cclib_obj.atomnos
-        final_atoms = makease(atom_coords, atom_nos) if len(atom_coords) else None
-
-        energy = cclib_obj.scfenergies[-1]
-        forces = (
-            -cclib_obj.grads[-1, :, :] * units.Hartree / units.Bohr
-            if hasattr(cclib_obj, "grads")
-            else None
+        return read_xtb_results(
+            output_file, grad_file=grad_file, xtb_opt_file=xtb_opt_file
         )
-
-        results = {
-            "energy": energy,
-            "attributes": jsanitize(cclib_obj.getattributes()),
-        }
-        if final_atoms:
-            results["final_atoms"] = final_atoms
-
-        if forces is not None:
-            results["forces"] = forces
-
-        return results
 
     def load_profile(self, cfg, **kwargs):
         return XTBProfile.from_config(cfg, self.name, **kwargs)

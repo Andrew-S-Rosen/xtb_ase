@@ -18,7 +18,7 @@ def test_molecule_static(tmp_path, monkeypatch):
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["methods"] == ["GFN2-xTB"]
     assert attributes["metadata"]["coord_type"] == "xyz"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
 
 
@@ -35,7 +35,7 @@ def test_molecule_static_gfnff(tmp_path, monkeypatch):
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["methods"] == ["GFN-FF"]
     assert attributes["metadata"]["coord_type"] == "xyz"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--gfnff" in attributes["metadata"]["keywords"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
 
@@ -51,7 +51,7 @@ def test_molecule_static_profile(tmp_path, monkeypatch):
     assert results["energy"] == pytest.approx(-137.9677709332199)
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["coord_type"] == "xyz"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
 
@@ -67,7 +67,7 @@ def test_bulk_static(tmp_path, monkeypatch):
     assert results["energy"] == pytest.approx(-97.362345908)
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["coord_type"] == "xyz"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--tblite" in attributes["metadata"]["keywords"]
     assert "--spinpol" in attributes["metadata"]["keywords"]
 
@@ -83,7 +83,7 @@ def test_molecule_spin_without_spinpol(tmp_path, monkeypatch):
     assert results["energy"] == pytest.approx(-96.946877312)
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["coord_type"] == "xyz"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
     assert "--spinpol" not in attributes["metadata"]["keywords"]
 
@@ -99,7 +99,7 @@ def test_bulk_static_gfn1(tmp_path, monkeypatch):
     assert results["energy"] == pytest.approx(-130.73083354749846)
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["coord_type"] == "POSCAR"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
 
@@ -115,7 +115,7 @@ def test_bulk_static_detailed_input(tmp_path, monkeypatch):
     assert results["energy"] == pytest.approx(-130.73083354749846)
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["coord_type"] == "POSCAR"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--gfn" in attributes["metadata"]["keywords"]
     assert "--tblite" in attributes["metadata"]["keywords"]
 
@@ -142,7 +142,7 @@ def test_molecule_relax(tmp_path, monkeypatch):
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["methods"] == ["GFN2-xTB"]
     assert attributes["metadata"]["coord_type"] == "xyz"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]
 
 
@@ -163,5 +163,5 @@ def test_molecule_internal_relax(tmp_path, monkeypatch):
     assert attributes["metadata"]["package"] == "xTB"
     assert attributes["metadata"]["methods"] == ["GFN2-xTB"]
     assert attributes["metadata"]["coord_type"] == "xyz"
-    assert attributes["scfenergies"] == results["energy"]
+    assert attributes["scfenergies"][-1] == results["energy"]
     assert "--tblite" not in attributes["metadata"]["keywords"]

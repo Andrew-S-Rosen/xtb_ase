@@ -7,18 +7,21 @@ import logging
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from ase.io import write
+from ase.io import read, write
+from ase.units import Bohr, Hartree
 from cclib.io import ccread
 from jinja2 import Template
+from monty.json import jsanitize
 
 if TYPE_CHECKING:
     from typing import Any
 
     from ase.atoms import Atoms
-    from cclib.parser.data import ccData
+
+    from xtb_ase.calculator import Results
 
 
-def write_xtb(
+def write_xtb_inputs(
     atoms: Atoms,
     input_filepath: Path | str,
     geom_filepath: Path | str,
@@ -67,7 +70,11 @@ $end
     write(geom_filepath, atoms)
 
 
-def read_xtb(output_filepath: Path | str) -> ccData:
+def read_xtb_results(
+    output_file: Path | str,
+    grad_file: Path | str | None,
+    xtb_opt_file: Path | str | None,
+) -> Results:
     """
     Read the output files from xTB.
 
@@ -75,10 +82,36 @@ def read_xtb(output_filepath: Path | str) -> ccData:
     ----------
     output_filepath
         The path to the xTB output file.
+    grad_filepath
+        The path to the xTB gradient file.
 
     Returns
     -------
-    cclib_obj
-        The cclib object containing the xTB results.
+    Results
+        The calculator results.
     """
-    return ccread(output_filepath, logging.ERROR)
+
+    filepaths = [output_file]
+    if grad_file.exists():
+        filepaths.append(grad_file)
+
+    cclib_obj = ccread(filepaths, logging.ERROR)
+    energy = cclib_obj.scfenergies[-1]
+
+    results = {
+        "energy": energy,
+        "attributes": jsanitize(cclib_obj.getattributes()),
+    }
+    if hasattr(cclib_obj, "grads"):
+        forces = -cclib_obj.grads[-1, :, :] * Hartree / Bohr
+        results["forces"] = forces
+
+    xtb_opt_file = Path(xtb_opt_file)
+    if xtb_opt_file.is_file():
+        final_atoms = read(xtb_opt_file)
+        results["final_atoms"] = final_atoms
+
+    if forces is not None:
+        results["forces"] = forces
+
+    return dict(sorted(results.items()))
