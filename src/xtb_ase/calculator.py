@@ -104,7 +104,6 @@ class _XTBTemplate(CalculatorTemplate):
         self.input_file = f"{label}.inp"
         self.output_file = f"{label}.out"
         self.grad_file = "gradient"
-        self.xtb_opt_file = "xtbopt.xyz"
         self.periodic = None
         self.geom_file = None
 
@@ -153,6 +152,7 @@ class _XTBTemplate(CalculatorTemplate):
         """
         self.periodic = bool(atoms.pbc.all())
         self.geom_file = "POSCAR" if self.periodic else "coord.xyz"
+        self.xtb_opt_file = "xtbopt.poscar" if self.periodic else "xtbopt.xyz"
         if self.periodic and "--tblite" not in profile.argv:
             profile.argv.append("--tblite")
 
