@@ -5,8 +5,6 @@
 
 A fully featured ASE calculator for the [xTB code](https://xtb-docs.readthedocs.io/en/latest/). It is maintained by the [Rosen Research Group](https://rosen.cbe.princeton.edu/) at Princeton University.
 
-**This is still a work in progress!**
-
 ## Documentation
 
 <p align="center">
