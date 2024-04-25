@@ -138,6 +138,8 @@ class _XTBTemplate(CalculatorTemplate):
 
         Parameters
         ----------
+        profile
+            The profile to use. This cannot be removed.
         directory
             The path to the directory to write the xTB input files in.
         atoms
