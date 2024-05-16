@@ -1,14 +1,13 @@
 # xtb_ase
 
 ![tests](https://github.com/quantum-accelerators/xtb_ase/actions/workflows/tests.yaml/badge.svg)
-[![DeepSource](https://app.deepsource.com/gh/Quantum-Accelerators/xtb_ase.svg/?label=active+issues&show_trend=false&token=Gi9aDc7Mwq1l-tm5HOYETbEt)](https://app.deepsource.com/gh/Quantum-Accelerators/xtb_ase/)
 
 A fully featured ASE calculator for the [xTB code](https://xtb-docs.readthedocs.io/en/latest/). It is maintained by the [Rosen Research Group](https://rosen.cbe.princeton.edu/) at Princeton University.
 
 ## Documentation
 
 <p align="center">
-  📖 <a href="https://quantum-accelerators.github.io/xtb_ase/"><b><i>Read the Documentation!</i></b></a> 📖
+  📖 <a href="https://andrew-s-rosen.github.io/xtb_ase/"><b><i>Read the Documentation!</i></b></a> 📖
 </p>
 
 ## Motivation
