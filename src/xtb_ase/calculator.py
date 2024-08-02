@@ -74,7 +74,7 @@ class XTBProfile:
         """
         cmd = self.argv + ["--input", input_filename, geom_filename, "--json"]
         cmd = [str(arg) for arg in cmd]
-        with open(output_filename, "w") as fd:
+        with open(directory / output_filename, "w") as fd:
             check_call(cmd, stdout=fd, cwd=directory)
 
 
